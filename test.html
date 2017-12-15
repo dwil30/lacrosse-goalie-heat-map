@@ -1,0 +1,101 @@
+<script>
+
+var shotData = [
+    {xcoor:0, ycoor: 0, shotResult:true, goalie:true},
+    {xcoor:140, ycoor: 174, shotResult:true, goalie:true},
+    {xcoor:304, ycoor: 151, shotResult:false, goalie:true},
+    {xcoor:306, ycoor: 149, shotResult:true, goalie:true},
+    {xcoor:420, ycoor: 149, shotResult:false, goalie:true} 
+    ];
+    
+var xWidth = 420;
+var yWidth = 440;
+    
+var quads = 3;
+       
+shotData.forEach(function(shot) {
+      
+    if (shot.xcoor < xWidth/quads){ 
+        if (shot.ycoor < yWidth/quads) { 
+            if (shot.shotResult) {
+                console.log('top left goal');
+            }
+            else {
+                console.log('top left save');
+            }
+        }
+        else if (shot.ycoor <= (yWidth/quads)*2 && shot.ycoor >= yWidth/quads){
+            if (shot.shotResult) {
+                console.log('top center goal');
+            }
+            else {
+                console.log('top center save');
+            }
+        }
+        else if (shot.ycoor > (xWidth/quads)*2){
+            if (shot.shotResult) {
+                console.log('top right goal');
+            }
+            else {
+                console.log('top right save');
+            }
+        }
+    }
+    else if (shot.xcoor <= (xWidth/quads)*2 && shot.xcoor >= xWidth/quads){
+         if (shot.ycoor < yWidth/quads) {
+            if (shot.shotResult) {
+                console.log('side left goal');
+            }
+            else {
+                console.log('side left save');
+            }
+        }
+        else if (shot.ycoor <= (yWidth/quads)*2 && shot.ycoor >= yWidth/quads){
+            if (shot.shotResult) {
+                console.log('middle goal');
+            }
+            else {
+                console.log('middle save');
+            }
+        }
+        else if (shot.ycoor > (xWidth/quads)*2){
+            if (shot.shotResult) {
+                console.log('side right goal');
+            }
+            else {
+                console.log('side right save');
+            }
+        }
+    }
+    else if (shot.xcoor > (xWidth/quads)*2){
+        if (shot.ycoor < yWidth/quads) {
+            if (shot.shotResult) {
+                console.log('bottom left goal');
+            }
+            else {
+                console.log('bottom left save');
+            }
+        }
+        else if (shot.ycoor <= (yWidth/quads)*2 && shot.ycoor >= yWidth/quads){
+            if (shot.shotResult) {
+                console.log('bottom center goal');
+            }
+            else {
+                console.log('bottom center save');
+            }
+        }
+        else if (shot.ycoor > (xWidth/quads)*2){
+            if (shot.shotResult) {
+                console.log('bottom right goal');
+            }
+            else {
+                console.log('bottom right save');
+            }
+        }
+    }
+});
+
+
+</script>
+
+<div id='root'></div>
