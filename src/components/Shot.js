@@ -32,11 +32,14 @@ export default class Shot extends React.Component {
                 <IconButton className="save" style={styles.button}>
                     <FontIcon 
                         id={index} 
-                        color={'#70c60b'} 
-                        hoverColor={'#5da20d'} 
-                        className="material-icons" 
-                        onClick={(e) => (e.stopPropagation(), this.props.removeShot(index))} >fiber_manual_record</FontIcon> />
-                </IconButton>    
+                        color={'#70c60b'}
+                        hoverColor={'#5da20d'}
+                        className="material-icons"
+                        onClick={(e) => (e.stopPropagation(), this.props.removeShot(index))} 
+                    >
+                        fiber_manual_record
+                    </FontIcon>
+                </IconButton>
                 )
                 
             : (  
@@ -47,8 +50,10 @@ export default class Shot extends React.Component {
                         hoverColor={'#c11414'} 
                         className="material-icons" 
                         onClick={(e) => (e.stopPropagation(), this.props.removeShot(index))} 
-                        >fiber_manual_record</FontIcon> />
-                </IconButton>    
+                    >
+                        fiber_manual_record
+                    </FontIcon>
+                </IconButton>
                 )
              }
         </div>

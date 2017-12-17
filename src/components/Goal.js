@@ -42,14 +42,25 @@ const style = {
 }
 
 export default class Goal extends React.Component {
-     
+
+    changeGridNumber = (e) => {
+        this.props.heatMapBoxNumber(e);
+    }
+
     render() {
         return (
             <div className="main-body" style={this.props.drawer ? style.main : style.mainNoPadding}>
                 <Paper onClick={this.props.addShot} style={style.paper}>
-                    <Heatmap slider={this.props.slider} heatMap={this.props.heatMap} />
+                    <Heatmap
+                        shots={this.props.shots}
+                        slider={this.props.slider}
+                        heatMap={this.props.heatMap}
+                        heatMapLength={this.props.heatMapLength}
+                        paperWidth={style.paper.width}
+                        paperHeight={style.paper.height}
+                    />
                     <div className="goal-container">
-                        {this.props.goalie ? 
+                        {this.props.goalie ?
                         <img alt="Goalie Rightie" src={require('../images/GoalieRight.png')} className="goalie-rightie" /> :
                         <img alt="Goalie Leftie" src={require('../images/GoalieLeft.png')} className="goalie-leftie" />}
                         <img alt="GoalImage" src={require('../images/LacrosseGoalFinal.jpg')} className="goal-image" id="goal" />
@@ -83,20 +94,31 @@ export default class Goal extends React.Component {
                     </div>  
                             
                     {!this.props.authenticated ?
-                    <Login setCurrentUser={this.props.setCurrentUser}/> : 
-                    <div className='legend-container'>
-                        <TextField
-                        floatingLabelText="Heat Map Name"
-                        type="text"
-                        name="heatmapname"
-                        style={{marginTop:0}}    />
-                        <RaisedButton onClick={this.props.handleCreateMap} label="Save Heat Map" primary={true} style={style.button} />
-                    </div>
+                        <Login setCurrentUser={this.props.setCurrentUser}/> : 
+                        <div className='legend-container'>
+                            <TextField
+                                floatingLabelText="Heat Map Name"
+                                type="text"
+                                name="heatmapname"
+                                style={{marginTop:0}}    
+                            />
+                            <RaisedButton onClick={this.props.handleCreateMap} label="Save Heat Map" primary={true} style={style.button} />
+                        </div>
                     }
-                      
                     <div className="legend-container">
                         <div className="legend-text">Grid Length (2x2 up to 10x10)</div>
-                        <input style={{width:200,margin:'auto'}} id='quads' className='w-input' min="2" max="10" name="quads" type="number" ref={(input) => { this.gridInput = input }} placeholder="Grid Length" />
+                        <input 
+                            style={{width:200,margin:'auto'}} 
+                            id='quads'
+                            onChange={this.changeGridNumber}
+                            className='w-input' 
+                            min="2" max="10" 
+                            name="quads"
+                            type="number"
+                            value={this.props.heatMapLength}
+                            ref={(input) => { this.gridInput = input }} 
+                            placeholder="Grid Length" 
+                        />
                     </div>
                 </div> :<div>
                     <RaisedButton onClick={this.props.handleCreateMap} label="Create Heat Map" primary={true} style={style.button} /><br/></div>

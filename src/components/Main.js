@@ -43,7 +43,8 @@ export default class Main extends Component {
             drawer: true, 
             shotResultToggle: true, //true = Save, false = Goal
             goalie: true,
-            shots: {} //xcoord, ycoord, shotResult, goalie
+            shots: {}, //xcoord, ycoord, shotResult, goalie
+            heatMapLength: 3
         }
     }
 
@@ -118,6 +119,14 @@ export default class Main extends Component {
     handleFirstSlider(event, value){
         this.setState({slider: value})
     }
+
+    heatMapBoxNumber = (e) => {
+        let value = e.target.value;
+        if ( value < 11 && value > 1 ) {
+            this.setState({ heatMapLength: value});
+        }
+
+    }
     
     render() {
         return (
@@ -151,6 +160,8 @@ export default class Main extends Component {
                     shotResultToggle={this.state.shotResultToggle}
                     slider={this.state.slider}
                     inputRef={input => this.inputElement = input}
+                    heatMapBoxNumber={this.heatMapBoxNumber}
+                    heatMapLength={this.state.heatMapLength}
                     />
             </div>
         )
