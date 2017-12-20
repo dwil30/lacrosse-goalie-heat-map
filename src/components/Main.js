@@ -9,17 +9,24 @@ export default class Main extends Component {
     componentWillMount() {
         // check if there is any order in localStorage
         const localStorageRef = localStorage.getItem(`shots`);
-
         if(localStorageRef) {
             // update our App component's shots state
             this.setState({
-            shots: JSON.parse(localStorageRef)
+            shots: JSON.parse(localStorageRef), 
+            })
+        }
+        const mapSet = localStorage.getItem(`heatMap`);
+    
+        if(mapSet){
+            this.setState({
+            heatMap: JSON.parse(mapSet), 
             })
         }
     }
     
     componentWillUpdate(nextProps, nextState) {
         localStorage.setItem(`shots`, JSON.stringify(nextState.shots));
+        //localStorage.setItem('heatMap', JSON.stringify(nextState.heatMap));
     }
     
     constructor(props) {
@@ -35,6 +42,7 @@ export default class Main extends Component {
         this.handleCreateMap = this.handleCreateMap.bind(this);
         this.loadSampleShots = this.loadSampleShots.bind(this);
         this.handleFirstSlider = this.handleFirstSlider.bind(this);
+        this.closeHeatmap = this.closeHeatmap.bind(this);
     
         this.state = {
             slider:0.9,
@@ -44,7 +52,8 @@ export default class Main extends Component {
             shotResultToggle: true, //true = Save, false = Goal
             goalie: true,
             shots: {}, //xcoord, ycoord, shotResult, goalie
-            heatMapLength: 3
+            heatMapLength: 3, 
+            editMode:false
         }
     }
 
@@ -119,10 +128,14 @@ export default class Main extends Component {
     handleFirstSlider(event, value){
         this.setState({slider: value})
     }
+    
+    closeHeatmap(){
+         this.setState({heatMap: false});  
+    }
 
     heatMapBoxNumber = (e) => {
         let value = e.target.value;
-        if ( value < 11 && value > 1 ) {
+        if ( value < 16 && value > 1 ) {
             this.setState({ heatMapLength: value});
         }
 
@@ -135,7 +148,7 @@ export default class Main extends Component {
                     authenticated={this.props.authenticated}
                     handleToggle={this.handleToggle} 
                     drawer={this.state.drawer}
-                    logOut={this.props.logOut}/>
+                    />
                 <LeftDrawer 
                     handleChange={this.handleChange} 
                     switchResult={this.switchResult}
@@ -162,6 +175,7 @@ export default class Main extends Component {
                     inputRef={input => this.inputElement = input}
                     heatMapBoxNumber={this.heatMapBoxNumber}
                     heatMapLength={this.state.heatMapLength}
+                    closeHeatmap={this.closeHeatmap}
                     />
             </div>
         )

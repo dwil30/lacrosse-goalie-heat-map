@@ -45,7 +45,7 @@ export default class Heatmap extends React.PureComponent {
             } else if (sum === 0) {
                 percent = 0;
             } else {
-                percent = 100/sum * item.save;
+                percent = Math.round(100/sum * item.save);
             }
 
             let boxClass;
@@ -71,7 +71,7 @@ export default class Heatmap extends React.PureComponent {
                         height: boxHeight 
                     }}
                     key={i}
-                    title={`Goal ${item.goal} - Save ${item.save} - ${percent}%`}
+                    title={`Shots: ${item.goal+item.save} - Save Percentage: ${percent}%`}
                 >
                 </div>
             )

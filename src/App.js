@@ -3,11 +3,12 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Main from './components/Main';
-import Typekit from 'react-typekit';
 import { app } from './base';
+import Login from './components/Login'
+import List from './components/List'
 
 const muiTheme = getMuiTheme({
-    fontFamily: 'proxima-nova',
+    fontFamily: 'roboto',
     palette: {
         primary1Color:'#093978'
     }
@@ -73,13 +74,15 @@ class App extends React.Component {
                 <MuiThemeProvider className="body" muiTheme={muiTheme}>
                     <BrowserRouter className="body">
                         <div className="body">
-                            <Route exact path="/" component={props => <Main logOut={this.logOut} authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
+                            <Route exaxt path='/dashboard' component={props => <List authenticated={this.state.authenticated} {...props} />} />
+                            <Route exact path="/" component={props => <Main authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
+                            <Route exact path="/login" component={props => <Login authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                         </div>
                     </BrowserRouter>
                 </MuiThemeProvider>
             
                 {/*** FONTS ***/}
-                <Typekit kitId="uir2vqw" />
+                <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet"/>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
                 {/*** ENDFONTS ***/}
             

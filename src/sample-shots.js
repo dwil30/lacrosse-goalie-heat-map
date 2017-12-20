@@ -2,11 +2,11 @@
 
 const shots = {};
 
-for (var x = 0; x < 25; x++) {
+for (var x = 0; x < 150; x++) {
   shots[x] = {
       xCoor:Math.floor(Math.random() * 420),
       yCoor:Math.floor(Math.random() * 440),
-      shotResult: (Math.random() >= 0.5),
+      shotResult: (Math.random() >= 0.4),
       goalie: true,
   }
 }

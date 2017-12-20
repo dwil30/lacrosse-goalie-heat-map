@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { app, facebookProvider, twitterProvider, googleProvider } from '../base';
+import { app } from '../base';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Snackbar from 'material-ui/Snackbar';
-//import RaisedButton from 'material-ui/RaisedButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import NavBar from './NavBar'
+import {Link, Redirect} from 'react-router-dom';
+import Paper from 'material-ui/Paper';
 //import TextField from 'material-ui/TextField';
 
 const style = {
@@ -16,6 +19,9 @@ const style = {
     },
     menu: {
         maxWidth: 300,
+    },
+    button:{
+        margin:'auto'
     }
 };
 
@@ -23,62 +29,83 @@ class Login extends Component {
     
   constructor(props) {
     super(props)
-    this.authWithFacebook = this.authWithFacebook.bind(this)
-    this.authWithTwitter = this.authWithTwitter.bind(this)
-    this.authWithGoogle = this.authWithGoogle.bind(this)   
+    this.authWithEmailPassword = this.authWithEmailPassword.bind(this)
     this.state = {  
       messageOpen: false, 
       errorMessage: '',
     }
   }
+    
+ authWithEmailPassword(event) {
+    event.preventDefault()
+    
+    const email = this.emailInput.value
+    const password = this.passwordInput.value
 
-  authWithFacebook() {
-    app.auth().signInWithPopup(facebookProvider)
-      .then((user, error) => {
-        if (error) {
-          this.setState({messageOpen:true, errorMessage: 'Unable to sign in with Facebook'})  
+    app.auth().fetchProvidersForEmail(email)
+      .then((providers) => {
+        if (providers.length === 0) {
+          // create user
+          return app.auth().createUserWithEmailAndPassword(email, password)
+        } else if (providers.indexOf("password") === -1) {
+          // they used facebook
+          //this.loginForm.reset()
+          this.setState({messageOpen:true, errorMessage: 'Email already in use with a social service.'}) 
         } else {
-            this.props.setCurrentUser(user)
+          // sign user in
+          return app.auth().signInWithEmailAndPassword(email, password)
         }
+      })
+      .then((user) => {
+        if (user && user.email) {
+          //this.loginForm.reset()
+          this.setState({redirect: true})
+          this.setCurrentUser(user)
+        }
+      })
+      .catch((error) => {
+        this.setState({messageOpen:true, errorMessage: error.message});
       })
   }
     
-  authWithTwitter() {
-    app.auth().signInWithPopup(twitterProvider)
-      .then((user, error) => {
-        if (error) {
-          this.setState({messageOpen:true, errorMessage: 'Unable to sign in with Twitter'})  
-        } else {
-            this.props.setCurrentUser(user)
-        }
-      })
-  }
-    
-  authWithGoogle() {
-    app.auth().signInWithPopup(googleProvider)
-      .then((user, error) => {
-        if (error) {
-          this.setState({messageOpen:true, errorMessage: 'Unable to sign in with Google'})  
-        } else {
-            this.props.setCurrentUser(user)
-        }
-      })
-  }    
-
   render() {
       
-    return (
-        <div>
-            <h4>Login/Create Account to Create and Save Heat Maps</h4>
-            <p>Connect via these social networks</p>  
-            <Menu style={style.menu}>
-                <div>
-                    <MenuItem style={{width:'90%',backgroundColor:'#3b5998',color:'white'}} primaryText="Facebook" onClick={() => { this.authWithFacebook() }} />
-                    <MenuItem style={{width:'90%',backgroundColor:'#0084b4',color:'white'}} primaryText="Twitter" onClick={() => { this.authWithTwitter() }} />
-                    <MenuItem style={{width:'90%',backgroundColor:'#DB4C3F',color:'white'}} primaryText="Google" onClick={() => { this.authWithGoogle() }}/>
-                </div>  
-            </Menu>
+    const { from } = this.props.location.state || { from: { pathname: '/' } }
+
+    if (this.state.redirect === true) {
+      return <Redirect to={from} />
+    }
       
+    return (
+        <div> 
+            <NavBar />
+        
+            <div className="login-wrapper">
+                <Paper className="login-container">
+                    <h3 className="loginh3">Login</h3>
+                <form onSubmit={(event) => { this.authWithEmailPassword(event) }} ref={(form) => { this.loginForm = form }}>
+                    <label htmlFor="email">Email:</label>
+                    <input
+                        className='w-input'
+                        placeholder="Email"
+                        name='email'
+                        type='email'
+                        ref={(input) => { this.emailInput = input }}
+                     />
+                    <label htmlFor="password">Password:</label>
+                    <input
+                        className='w-input'
+                        placeholder="Password"
+                        name='password'
+                        type='password'
+                        ref={(input) => { this.passwordInput = input }}
+                     />
+                     <RaisedButton label="Login" primary={true} type='submit' /><br/>
+                   
+                </form>
+                <Link style={{float:'right'}} to='/'>Back</Link>    
+            </Paper>
+            
                 
             <Snackbar
             open={this.state.messageOpen}
@@ -87,6 +114,7 @@ class Login extends Component {
             onRequestClose={this.handleRequestClose}
             style={{backgroundColor:'red', color:'white'}}/>
         </div>
+            </div>
     )
   }
 }

@@ -7,6 +7,9 @@ import Login from './Login';
 import Modal from './Modal';
 import Heatmap from './Heatmap';
 import Slider from 'material-ui/Slider';
+import {Link} from 'react-router-dom';
+import FlatButton from 'material-ui/FlatButton'
+
 
 const style = {
     button:{
@@ -30,13 +33,13 @@ const style = {
         display:'inline-block'
     }, 
     main:{
-        marginLeft:250
+        marginLeft:280
     },
      mainNoPadding:{
         marginLeft:0
     },
     slider: {
-        marginTop:0,
+        marginTop:-15,
         marginBottom:0
     }
 }
@@ -51,6 +54,8 @@ export default class Goal extends React.Component {
         return (
             <div className="main-body" style={this.props.drawer ? style.main : style.mainNoPadding}>
                 <Paper onClick={this.props.addShot} style={style.paper}>
+                    
+                    {this.props.heatMap &&
                     <Heatmap
                         shots={this.props.shots}
                         slider={this.props.slider}
@@ -58,7 +63,8 @@ export default class Goal extends React.Component {
                         heatMapLength={this.props.heatMapLength}
                         paperWidth={style.paper.width}
                         paperHeight={style.paper.height}
-                    />
+                    />}
+                    
                     <div className="goal-container">
                         {this.props.goalie ?
                         <img alt="Goalie Rightie" src={require('../images/GoalieRight.png')} className="goalie-rightie" /> :
@@ -73,9 +79,20 @@ export default class Goal extends React.Component {
                         
                     </div>
                 </Paper>
-                <div className="right-column">
+                <div className="right-container">
                 {this.props.heatMap ?
-                 <div>      
+                 <div> 
+                    {!this.props.authenticated ?
+                        <Link to='/login'><FlatButton label='login to save your heatmap'/></Link> : 
+                        <div className='legend-container'>
+                             <TextField
+                              hintText="Heat Map Name"
+                              style={{marginRight:10}}     
+                            /><br />    
+                            
+                            <RaisedButton label="Save Heat Map" className="options-button w-button" />
+                        </div>
+                    }        
                     <div className="legend-container">
                         <div className="legend-text">Save Percentage</div>
                         <div className="legend-block first">0-20%</div>
@@ -93,26 +110,16 @@ export default class Goal extends React.Component {
                         <Slider className='slider' style={style.slider} value={this.props.slider} onChange={this.props.handleFirstSlider} />
                     </div>  
                             
-                    {!this.props.authenticated ?
-                        <Login setCurrentUser={this.props.setCurrentUser}/> : 
-                        <div className='legend-container'>
-                            <TextField
-                                floatingLabelText="Heat Map Name"
-                                type="text"
-                                name="heatmapname"
-                                style={{marginTop:0}}    
-                            />
-                            <RaisedButton onClick={this.props.handleCreateMap} label="Save Heat Map" primary={true} style={style.button} />
-                        </div>
-                    }
+                    
+        
                     <div className="legend-container">
-                        <div className="legend-text">Grid Length (2x2 up to 10x10)</div>
+                        <div className="legend-text">Grid Length (2x2 up to 15x15)</div>
                         <input 
                             style={{width:200,margin:'auto'}} 
                             id='quads'
                             onChange={this.changeGridNumber}
                             className='w-input' 
-                            min="2" max="10" 
+                            min="2" max="15" 
                             name="quads"
                             type="number"
                             value={this.props.heatMapLength}
@@ -120,21 +127,34 @@ export default class Goal extends React.Component {
                             placeholder="Grid Length" 
                         />
                     </div>
-                </div> :<div>
-                    <RaisedButton onClick={this.props.handleCreateMap} label="Create Heat Map" primary={true} style={style.button} /><br/></div>
+                        {/*
+                     <div className="legend-container">
+                          <div className="legend-text">Share:</div>
+                             <div className="share-container">
+                                 <div className='Facebook'>Facebook</div>
+                                 <div className='Twitter'>Twitter</div>
+                                 <div className='Google'>Google+</div>
+                                 <div className='Pinterest'>Pinterest</div>
+                            </div>
+                    </div>  */}           
+                    <div className="legend-container">
+                             <RaisedButton backgroundColor={'#ff00004d'} onClick={this.props.handleDialogOpen} label="Remove All Shots" className="options-button w-button" style={{position:'absolute',bottom:0,right:20}} />
+                             <RaisedButton onClick={this.props.closeHeatmap} label="Edit Heatmap" className="options-button w-button" style={{margin:'auto'}} />
+                    </div>        
+                </div> : <div>
+                        
+                    <RaisedButton onClick={this.props.handleCreateMap} label="Show Heat Map" primary={true}  className="options-button w-button" /><br/>
+                        
+                    <RaisedButton onClick={this.props.handleDialogOpen} label="Remove All Shots" className="options-button w-button" /> <br/>
+                
+                    <RaisedButton onClick={this.props.loadSampleShots} label="Load Samples" className="options-button w-button" />    
+                    
+                </div>
                 }
-                
-               <RaisedButton onClick={this.props.handleDialogOpen} label="Remove All Shots" style={style.button} />
-               <Modal 
-                handleDialogClose={this.props.handleDialogClose} 
-                open={this.props.open}
-                clearShots={this.props.clearShots} />
-                
-                <RaisedButton onClick={this.props.loadSampleShots} label="Load Samples" style={style.button} />
-                    
-               
-                
-                    
+                    <Modal 
+                    handleDialogClose={this.props.handleDialogClose} 
+                    open={this.props.open}
+                    clearShots={this.props.clearShots} />  
                 </div>
                 
             </div>
