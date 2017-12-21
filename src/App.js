@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Main from './components/Main';
 import { app } from './base';
 import Login from './components/Login'
+import Logout from './components/Logout'
 import List from './components/List'
 
 const muiTheme = getMuiTheme({
@@ -64,11 +65,12 @@ class App extends React.Component {
     
     logOut() {
         app.auth().signOut().then((user) => {
-        this.setState({ authenticated:false, currentUser:null })
+            this.setState({ authenticated: false, currentUser: null })
         })
     }
     
     render() {
+        console.log(this.state);
         return (
             <div className="body">
                 <MuiThemeProvider className="body" muiTheme={muiTheme}>
@@ -77,6 +79,7 @@ class App extends React.Component {
                             <Route exaxt path='/dashboard' component={props => <List authenticated={this.state.authenticated} {...props} />} />
                             <Route exact path="/" component={props => <Main authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                             <Route exact path="/login" component={props => <Login authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
+                            <Route exact path="/logout" component={props => <Logout authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                         </div>
                     </BrowserRouter>
                 </MuiThemeProvider>

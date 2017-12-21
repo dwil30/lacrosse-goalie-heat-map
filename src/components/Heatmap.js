@@ -21,6 +21,10 @@ export default class Heatmap extends React.PureComponent {
             });
         }
 
+        if ( boxList.length === 0) {
+            return null
+        }
+
         const shots = this.props.shots;
         for (let key in shots) {
             const columnNumber = Math.ceil(shots[key].xCoor / boxWidth);

@@ -108,7 +108,7 @@ export default class Goal extends React.Component {
                     <div className="slider-container">
                         <div className="legend-text">Heat Map Opacity: {this.props.slider}</div>
                         <Slider className='slider' style={style.slider} value={this.props.slider} onChange={this.props.handleFirstSlider} />
-                    </div>  
+                    </div>
                             
                     
         
