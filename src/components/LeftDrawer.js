@@ -69,11 +69,13 @@ export default class DrawerSimpleExample extends React.Component {
                             <div className="control-container">
                                 <p>Save</p>
                                 <Toggle
-                                onClick={this.props.switchResult}
-                                thumbStyle={styles.thumbOff}
-                                thumbSwitchedStyle={styles.thumbSwitched}
-                                trackSwitchedStyle={styles.trackSwitched}
-                                style={styles.general} />
+                                    onToggle={this.props.switchShotResult}
+                                    thumbStyle={styles.thumbOff}
+                                    thumbSwitchedStyle={styles.thumbSwitched}
+                                    trackSwitchedStyle={styles.trackSwitched}
+                                    style={styles.general}
+                                    toggled={!this.props.shotResult}
+                                />
                                 <p>Goal</p>
                             </div>
                         </div>
@@ -82,9 +84,9 @@ export default class DrawerSimpleExample extends React.Component {
                             <div className="control-container">
                                 <p>Rightie</p>
                                 <Toggle
-                                name={"goalie"}
-                                onClick={this.props.switchGoalie}
-                                style={styles.general}
+                                    name={"goalie"}
+                                    onToggle={this.props.switchGoalie}
+                                    style={styles.general}
                                 />
                                 <p>Leftie</p>
                             </div>

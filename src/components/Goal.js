@@ -3,7 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import Shot from './Shot';
-import Login from './Login';
+// import Login from './Login';
 import Modal from './Modal';
 import Heatmap from './Heatmap';
 import Slider from 'material-ui/Slider';
@@ -50,14 +50,27 @@ export default class Goal extends React.Component {
         this.props.heatMapBoxNumber(e);
     }
 
+    getShots = (shots) => {
+        if (!shots || shots.length===0) {
+            return null
+        }
+        return Object.keys(shots).map( (item, key) => (
+            < Shot key={item} index={item} details={shots[item]} removeShot={this.props.removeShot} /> 
+        ))
+    }
+
     render() {
+        const appState = this.props.appState;
+        const activeData = appState.activeData;
+        const shots = appState.data[activeData].shots;
+
         return (
             <div className="main-body" style={this.props.drawer ? style.main : style.mainNoPadding}>
                 <Paper onClick={this.props.addShot} style={style.paper}>
                     
                     {this.props.heatMap &&
                     <Heatmap
-                        shots={this.props.shots}
+                        shots={shots}
                         slider={this.props.slider}
                         heatMap={this.props.heatMap}
                         heatMapLength={this.props.heatMapLength}
@@ -71,18 +84,14 @@ export default class Goal extends React.Component {
                         <img alt="Goalie Leftie" src={require('../images/GoalieLeft.png')} className="goalie-leftie" />}
                         <img alt="GoalImage" src={require('../images/LacrosseGoalFinal.jpg')} className="goal-image" id="goal" />
                         
-                        {
-                        Object
-                        .keys(this.props.shots)
-                        .map(key => <Shot key={key} index={key} details={this.props.shots[key]} removeShot={this.props.removeShot}/>)
-                        }
+                        {this.getShots(shots)}
                         
                     </div>
                 </Paper>
                 <div className="right-container">
                 {this.props.heatMap ?
                  <div> 
-                    {!this.props.authenticated ?
+                    {!this.props.appState.authenticated ?
                         <Link to='/login'><FlatButton label='login to save your heatmap'/></Link> : 
                         <div className='legend-container'>
                              <TextField
@@ -114,7 +123,7 @@ export default class Goal extends React.Component {
         
                     <div className="legend-container">
                         <div className="legend-text">Grid Length (2x2 up to 15x15)</div>
-                        <input 
+                        <input
                             style={{width:200,margin:'auto'}} 
                             id='quads'
                             onChange={this.changeGridNumber}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Heatmap extends React.PureComponent {
+export default class Heatmap extends React.Component {
 
     getBoxes = () => {
 

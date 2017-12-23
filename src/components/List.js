@@ -11,7 +11,7 @@ export default class List extends Component {
     return (
         <div> 
             <NavBar 
-                    authenticated={this.props.authenticated}
+                authenticated={this.props.authenticated}
             />
             
             <div className="main-wrapper no-padding">
@@ -26,16 +26,16 @@ export default class List extends Component {
                     <div className="updatedtext">Last Updated: 9/11/2017</div>
                 </div>
                 <div className="heatmapitem">
-                    <Link to={{ 
-    pathname: '/', 
-    state: { heatMap: false} 
-  }}>
+                <Link to={{ 
+                    pathname: '/', 
+                        state: { heatMap: false} 
+                    }}>
                    
-                        <div className="addnewdiv">
-                            <FontIcon className='material-icons'>add_circle</FontIcon>
-                        </div>
-                    </Link>
-                    <h2 className="heatmaph2">Add New Heat Map</h2>
+                    <div className="addnewdiv">
+                        <FontIcon className='material-icons'>add_circle</FontIcon>
+                    </div>
+                </Link>
+                <h2 className="heatmaph2">Add New Heat Map</h2>
                 </div>
             </div>
         </div>
