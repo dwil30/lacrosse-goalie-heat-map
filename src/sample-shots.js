@@ -3,7 +3,9 @@
 const sampleData = {
     id: 'sampleData',
     shots: {},
-    filter: {}
+    filter: {},
+    name: 'Sample data',
+    updated: '',
 };
 
 

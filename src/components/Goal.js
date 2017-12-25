@@ -59,6 +59,32 @@ export default class Goal extends React.Component {
         ))
     }
 
+    changeNameInput = (e) => {
+        this.setState({
+            nameInputValue: e.target.value
+        })
+    }
+
+    getSaveNameField = () => {
+        const saved = this.props.appState.data[this.props.appState.activeData].name;
+
+        return (
+            <div className='legend-container'>
+                <TextField
+                    id="text-field-controlled"
+                    hintText="Heat Map Name"
+                    style={{ marginRight: 10 }}
+                    onChange={this.props.saveName}
+                    value={saved}
+                />
+                <br />
+                {/* <RaisedButton label="Save Heat Map" className="options-button w-button" style={buttonStyle} onClick={() => this.props.saveName(value)}/> */}
+            </div>
+        )
+    }
+
+
+
     render() {
         const appState = this.props.appState;
         const activeData = appState.activeData;
@@ -92,15 +118,8 @@ export default class Goal extends React.Component {
                 {this.props.heatMap ?
                  <div> 
                     {!this.props.appState.authenticated ?
-                        <Link to='/login'><FlatButton label='login to save your heatmap'/></Link> : 
-                        <div className='legend-container'>
-                             <TextField
-                              hintText="Heat Map Name"
-                              style={{marginRight:10}}     
-                            /><br />    
-                            
-                            <RaisedButton label="Save Heat Map" className="options-button w-button" />
-                        </div>
+                        <Link to='/login'><FlatButton label='login to save your heatmap'/></Link> :
+                        this.getSaveNameField()
                     }        
                     <div className="legend-container">
                         <div className="legend-text">Save Percentage</div>
@@ -145,7 +164,7 @@ export default class Goal extends React.Component {
                                  <div className='Google'>Google+</div>
                                  <div className='Pinterest'>Pinterest</div>
                             </div>
-                    </div>  */}           
+                    </div>  */}
                     <div className="legend-container">
                              <RaisedButton backgroundColor={'#ff00004d'} onClick={this.props.handleDialogOpen} label="Remove All Shots" className="options-button w-button" style={{position:'absolute',bottom:0,right:20}} />
                              <RaisedButton onClick={this.props.closeHeatmap} label="Edit Heatmap" className="options-button w-button" style={{margin:'auto'}} />

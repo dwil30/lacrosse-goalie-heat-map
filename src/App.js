@@ -3,7 +3,8 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Main from './components/Main';
-import { app, base} from './base';
+// import { app, base} from './base';
+import { app} from './base';
 import Login from './components/Login'
 import Logout from './components/Logout'
 import List from './components/List'
@@ -21,43 +22,38 @@ class App extends React.PureComponent {
     
     constructor() {
         super();
-        this.setCurrentUser = this.setCurrentUser.bind(this);
-        this.logOut = this.logOut.bind(this);
         this.state = {
             authenticated: false,
             currentUser: null,
             data: [
                 {
                     id: 'fgfg',
+                    name: '',
                     shots: {},
-                    filter: {}
+                    filter: {},
+                    updated: '',
+                },
+                {
+                    id: 'fgfgdf',
+                    name: 'second',
+                    shots: {},
+                    filter: {},
+                    updated: '',
+                },
+                {
+                    id: 'fgfqweqweqgdf',
+                    name: 'third',
+                    shots: {},
+                    filter: {},
+                    updated: '',
                 }
             ],
             activeData: 0,
         }
     }
 
-    logOut() {
-        app.auth().signOut().then((user) => {
-            this.setState({ authenticated: false, currentUser: null })
-        })
-    }
 
-    setCurrentUser(user) {
-        if (user) {
-            this.setState({
-                currentUser: user,
-                authenticated: true
-            })
-        } else {
-            this.setState({
-                currentUser: null,
-                authenticated: false
-            })
-        }
-    }
-
-
+    //Start React lifecycles methods
     componentWillMount() {
         this.removeAuthListener = app.auth().onAuthStateChanged((user) => {
             if (user) {
@@ -78,6 +74,47 @@ class App extends React.PureComponent {
 
     componentWillUnmount() {
         this.removeAuthListener();
+    }
+    //finish React lifecycles methods
+
+
+    //Start work with login and user
+    logOut = () => {
+        app.auth().signOut().then((user) => {
+            this.setState({ authenticated: false, currentUser: null })
+        })
+    }
+
+    setCurrentUser = (user) => {
+        if (user) {
+            this.setState({
+                currentUser: user,
+                authenticated: true
+            })
+        } else {
+            this.setState({
+                currentUser: null,
+                authenticated: false
+            })
+        }
+    }
+    //finish work with login and user
+
+
+    changeActiveData = (to) => {
+        this.setState({ activeData: to})
+    }
+
+    saveName = (e) => {
+        const value = e.target.value;
+        const updated = new Date();
+        let newData = [...this.state.data];
+        newData[this.state.activeData].name = value;
+        newData[this.state.activeData].updated = updated;
+
+        this.setState({
+            data: newData
+        })
     }
 
     addShot = (e, shotResultToggle, goalie) => {
@@ -102,9 +139,12 @@ class App extends React.PureComponent {
             shotResult: shotValue,
             goalie: goalieValue
         }
+
+        const updated = new Date();
+        
         let newData = [ ...this.state.data ];
         newData[this.state.activeData].shots[`shot-${timestamp}`] = shotClick
-
+        newData[this.state.activeData].updated = updated;
         this.setState({
             data: newData
         })
@@ -113,6 +153,7 @@ class App extends React.PureComponent {
     loadSampleShots = () => {
         let newData = [...this.state.data];
         newData[this.state.activeData] = sampleData;
+
         this.setState({
             data: newData
         })
@@ -120,36 +161,68 @@ class App extends React.PureComponent {
 
     clearShots = () => {
         let newData = [...this.state.data];
+        const updated = new Date();
         newData[this.state.activeData].shots = {};
+        newData[this.state.activeData].updated = updated;
         this.setState({
             data: newData
         })
     }
 
     removeShot = (index) => {
+        const updated = new Date();
         let newData = [...this.state.data];
+        newData[this.state.activeData].updated = updated;
         delete newData[this.state.activeData].shots[index]
         this.setState({
             data: newData
         })
     }
 
+    addNewMap = () => {
+        const updated = new Date();
+        let newData = [...this.state.data];
+        newData.push({
+            id: '',
+            name: 'new map',
+            shots: {},
+            filter: {},
+            updated: '',
+        })
+        newData[this.state.activeData].updated = updated;
+        
+        this.setState({
+            data: newData,
+            activeData: (newData.length - 1)
+        })
+    }
+
+
 
     render() {
+        // console.log(this.state);
         return (
             <div className="body">
                 <MuiThemeProvider className="body" muiTheme={muiTheme}>
                     <BrowserRouter className="body">
                         <div className="body">
-                            <Route exact path='/dashboard' component={props => <List authenticated={this.state.authenticated} {...props} />} />
                             <Route exact path="/" render={ (props) => <Main
                                 appState={this.state}
                                 addShot={this.addShot}
                                 loadSampleShots={this.loadSampleShots}
                                 clearShots={this.clearShots}
                                 removeShot={this.removeShot}
+                                addNewMap={this.addNewMap}
+                                saveName={this.saveName}
                                 {...props}
                             />}/>
+                            <Route exact path='/dashboard' component={ (props) => <List 
+                                appState={this.state}
+                                authenticated={this.state.authenticated}
+                                changeActiveData={this.changeActiveData}
+                                addNewMap={this.addNewMap}
+                                {...props}
+                            />} />
                             <Route exact path="/login" component={props => <Login authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                             <Route exact path="/logout" component={props => <Logout authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                         </div>

@@ -100,8 +100,9 @@ export default class Main extends React.PureComponent {
             <div className='body'>
                 <NavBar 
                     authenticated={this.props.appState.authenticated}
-                    handleToggle={this.handleToggle} 
+                    handleToggle={this.handleToggle}
                     drawer={this.state.drawer}
+                    addNewMap={this.props.addNewMap}
                 />
                 <LeftDrawer 
                     switchShotResult={this.switchShotResult}
@@ -117,8 +118,8 @@ export default class Main extends React.PureComponent {
                     loadSampleShots={this.props.loadSampleShots}
                     clearShots={this.props.clearShots}
                     removeShot={this.props.removeShot}
+                    saveName={this.props.saveName}
                     // OLD
-
                     drawer={this.state.drawer}
                     goalie={this.state.goalie}
                     handleCreateMap={this.handleCreateMap}
@@ -127,9 +128,8 @@ export default class Main extends React.PureComponent {
                     handleFirstSlider={this.handleFirstSlider}
                     heatMap={this.state.heatMap}
                     open={this.state.open}
-                    // shotResultToggle={this.state.shotResultToggle}
                     slider={this.state.slider}
-                    inputRef={input => this.inputElement = input}
+                    // inputRef={input => this.inputElement = input}
                     heatMapBoxNumber={this.heatMapBoxNumber}
                     heatMapLength={this.state.heatMapLength}
                     closeHeatmap={this.closeHeatmap}
