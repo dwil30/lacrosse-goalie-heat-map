@@ -3,8 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Main from './components/Main';
-// import { app, base} from './base';
-import { app} from './base';
+import { app, base} from './base';
 import Login from './components/Login'
 import Logout from './components/Logout'
 import List from './components/List'
@@ -18,35 +17,22 @@ const muiTheme = getMuiTheme({
     }
 })
 
-class App extends React.PureComponent {
+class App extends React.Component {
     
     constructor() {
         super();
         this.state = {
             authenticated: false,
             currentUser: null,
+            uid: 'default',
             data: [
                 {
-                    id: 'fgfg',
-                    name: '',
+                    id: 'sdgdsfg',
+                    name: 'Demo map',
                     shots: {},
                     filter: {},
-                    updated: '',
+                    updated: 'No data',
                 },
-                {
-                    id: 'fgfgdf',
-                    name: 'second',
-                    shots: {},
-                    filter: {},
-                    updated: '',
-                },
-                {
-                    id: 'fgfqweqweqgdf',
-                    name: 'third',
-                    shots: {},
-                    filter: {},
-                    updated: '',
-                }
             ],
             activeData: 0,
         }
@@ -54,6 +40,7 @@ class App extends React.PureComponent {
 
 
     //Start React lifecycles methods
+
     componentWillMount() {
         this.removeAuthListener = app.auth().onAuthStateChanged((user) => {
             if (user) {
@@ -62,6 +49,10 @@ class App extends React.PureComponent {
                     currentUser: user,
                     loading: false,
                 })
+
+                const uid = this.state.currentUser.uid;
+                this.getUsersData(uid);
+                // this.listen(uid);
             } else {
                 this.setState({
                     authenticated: false,
@@ -75,14 +66,62 @@ class App extends React.PureComponent {
     componentWillUnmount() {
         this.removeAuthListener();
     }
+
     //finish React lifecycles methods
+    
+        
+    //Start work with login and firebase
+    listen = (uid) => {
+        base.syncState('usersData/' + uid + '/data', {
+            context: this,
+            state: 'data',
+        })
+    }
+
+    getUsersData = (uid) => {
+        base.fetch(`usersData/${uid}`, {
+            context: this
+        }).then( (data) => {
+            // console.log( data );
+            if ( data.hasOwnProperty('data') ) {
+                // console.log('You old user. We switch on state<>database listener');
+                this.listen(uid);
+            } else {
+                // console.log('New user. We will add your folder in a database');
+                this.addNewUsersFolder(uid);
+            }
+        }).catch(error => {
+            // console.log('Error in getUsersData - ', error);
+        })
+    }
 
 
-    //Start work with login and user
+    // When user is new, we create in database his folder, on load local user data
+    addNewUsersFolder = (uid) => {
+        base.post(`usersData/${uid}`, {
+            data: { data: this.state.data, user: this.state.currentUser.email}
+        }).then(() => {
+            this.listen(uid);
+        }).catch(err => {
+            // handle error
+        });
+    }
+
     logOut = () => {
         app.auth().signOut().then((user) => {
-            this.setState({ authenticated: false, currentUser: null })
-        })
+            this.setState({ authenticated: false, currentUser: null, data: {}})
+        });
+        this.setState({
+            data: [
+                {
+                    id: 'sdgdsfg',
+                    name: 'Demo map',
+                    shots: {},
+                    filter: {},
+                    updated: 'No data',
+                },
+            ], });
+        base.reset();
     }
 
     setCurrentUser = (user) => {
@@ -94,7 +133,7 @@ class App extends React.PureComponent {
         } else {
             this.setState({
                 currentUser: null,
-                authenticated: false
+                authenticated: false,
             })
         }
     }
@@ -107,7 +146,7 @@ class App extends React.PureComponent {
 
     saveName = (e) => {
         const value = e.target.value;
-        const updated = new Date();
+        const updated = Date.now();
         let newData = [...this.state.data];
         newData[this.state.activeData].name = value;
         newData[this.state.activeData].updated = updated;
@@ -140,11 +179,15 @@ class App extends React.PureComponent {
             goalie: goalieValue
         }
 
-        const updated = new Date();
+        const date = Date.now();
         
         let newData = [ ...this.state.data ];
+        if (!newData[this.state.activeData].shots) {
+            newData[this.state.activeData].shots = {}
+        }
         newData[this.state.activeData].shots[`shot-${timestamp}`] = shotClick
-        newData[this.state.activeData].updated = updated;
+        newData[this.state.activeData].updated = date;
+
         this.setState({
             data: newData
         })
@@ -161,7 +204,7 @@ class App extends React.PureComponent {
 
     clearShots = () => {
         let newData = [...this.state.data];
-        const updated = new Date();
+        const updated = Date.now();
         newData[this.state.activeData].shots = {};
         newData[this.state.activeData].updated = updated;
         this.setState({
@@ -170,7 +213,7 @@ class App extends React.PureComponent {
     }
 
     removeShot = (index) => {
-        const updated = new Date();
+        const updated = Date.now();
         let newData = [...this.state.data];
         newData[this.state.activeData].updated = updated;
         delete newData[this.state.activeData].shots[index]
@@ -180,7 +223,7 @@ class App extends React.PureComponent {
     }
 
     addNewMap = () => {
-        const updated = new Date();
+        const updated = Date.now();
         let newData = [...this.state.data];
         newData.push({
             id: '',
@@ -197,10 +240,23 @@ class App extends React.PureComponent {
         })
     }
 
-
+    checkData = () => {
+        this.setState({
+            data: [
+                {
+                    "id": "",
+                    "name": 'new map',
+                    "shots": {},
+                    "filter": {},
+                    "updated": "",
+                }
+            ]
+        })
+    }
 
     render() {
-        // console.log(this.state);
+        console.log(this.state);
+
         return (
             <div className="body">
                 <MuiThemeProvider className="body" muiTheme={muiTheme}>

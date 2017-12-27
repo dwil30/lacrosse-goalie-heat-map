@@ -88,7 +88,10 @@ export default class Goal extends React.Component {
     render() {
         const appState = this.props.appState;
         const activeData = appState.activeData;
-        const shots = appState.data[activeData].shots;
+        let shots = []
+        if (appState.data[activeData]) {
+            shots = appState.data[activeData].shots;
+        }
 
         return (
             <div className="main-body" style={this.props.drawer ? style.main : style.mainNoPadding}>

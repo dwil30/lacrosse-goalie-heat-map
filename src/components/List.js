@@ -5,15 +5,20 @@ import { Link } from 'react-router-dom'
 
 export default class List extends React.PureComponent {
 
-    getUpdated = (date) => {
-        if(typeof(date) === 'object') {
-            return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} - ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
-        } else {
+    getUpdated = (ms) => {
+        const date = new Date(ms)
+        if ( ms === 'No data') {
             return 'no data'
+        } else {
+            return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} - ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
         }
     }
 
     getLinksOnHeatmaps = (data) => {
+        if (!data) {
+            return <div>Map not found</div>
+        }
+
         return data.map( (item, i) => {
             let activeStyle={};
             if (i===this.props.appState.activeData) {
