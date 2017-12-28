@@ -7,14 +7,19 @@ export default class Shot extends React.Component {
 
     removeShot = (e, index) => {
         e.stopPropagation();
-        this.props.removeShot(index);
+        if (this.props.active !== false) {
+            this.props.removeShot(index);
+        }
     }
 
     render() {
         const { details, index } = this.props;
         const isGoal = details.shotResult;
-        const yCoor = details.xCoor;
-        const xCoor = details.yCoor;
+        const paperWidth = this.props.paperWidth;
+        const paperHeight = this.props.paperHeight;
+
+        const yCoor = (details.xCoor) * (paperWidth / 420)
+        const xCoor = (details.yCoor) * (paperHeight / 440)
         const styles ={
             button:{
                 cursor:'pointer',
@@ -23,13 +28,13 @@ export default class Shot extends React.Component {
                 marginLeft:'-25px',
                 width:25, 
                 height:25, 
-                position:'absolute', 
-                top:xCoor, 
+                position:'absolute',
+                top:xCoor,
                 left:yCoor
             }
         }
         return (
-            
+
             <div>
                 {isGoal ? (
                     <IconButton className="save" style={styles.button}>
@@ -53,9 +58,6 @@ export default class Shot extends React.Component {
                             hoverColor={'#c11414'} 
                             className="material-icons" 
                             onClick={ (e) => this.removeShot(e, index)} 
-                            // onClick={this.removeShot(e, index)} 
-                            // onClick={(e) => (e.stopPropagation(), this.props.removeShot(index))} 
-                            // onClick={(e) => (e.stopPropagation( () => (this.props.removeShot(index))) )} 
                         >
                             fiber_manual_record
                         </FontIcon>

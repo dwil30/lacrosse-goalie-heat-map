@@ -31,7 +31,6 @@ export default class Main extends React.PureComponent {
     constructor(props) {
         super(props);
         this.handleToggle = this.handleToggle.bind(this);
-        this.switchGoalie = this.switchGoalie.bind(this);
         this.handleDialogOpen = this.handleDialogOpen.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleCreateMap = this.handleCreateMap.bind(this);
@@ -44,8 +43,7 @@ export default class Main extends React.PureComponent {
             open: false,
             drawer: true,
             shotResult: true, //true = Save, false = Goal
-            goalie: true,
-            heatMapLength: 3, 
+            // heatMapLength: 3, 
             editMode:false
         }
     }
@@ -56,10 +54,6 @@ export default class Main extends React.PureComponent {
     
     switchShotResult = () => {
         this.setState({ shotResult: !!!(this.state.shotResult)});
-    }
-    
-    switchGoalie(){
-       this.setState({goalie: !this.state.goalie});
     }
     
     handleDialogOpen(){
@@ -91,11 +85,11 @@ export default class Main extends React.PureComponent {
 
     addShot = (e) => {
         const shotResult = this.state.shotResult
-        const goalie = this.state.goalie
-        this.props.addShot(e, shotResult, goalie )
+        this.props.addShot(e, shotResult )
     }
 
     render() {
+        // console.log( this.props.appState.data[this.props.appState.activeData].goalie );
         return (
             <div className='body'>
                 <NavBar 
@@ -106,8 +100,9 @@ export default class Main extends React.PureComponent {
                 />
                 <LeftDrawer 
                     switchShotResult={this.switchShotResult}
-                    switchGoalie={this.switchGoalie}
-                    drawer={this.state.drawer} 
+                    switchGoalie={this.props.switchGoalie}
+                    drawer={this.state.drawer}
+                    goalieResult={this.props.appState.data[this.props.appState.activeData].goalie}
                     shotResult={this.state.shotResult}
                 />
                 <Goal
@@ -119,9 +114,10 @@ export default class Main extends React.PureComponent {
                     clearShots={this.props.clearShots}
                     removeShot={this.props.removeShot}
                     saveName={this.props.saveName}
+                    changeHeatmapGrid={this.props.changeHeatmapGrid}
                     // OLD
                     drawer={this.state.drawer}
-                    goalie={this.state.goalie}
+                    // goalieResult={this.props.appState.data[this.props.appState.activeData].goalie}
                     handleCreateMap={this.handleCreateMap}
                     handleDialogOpen={this.handleDialogOpen}
                     handleDialogClose={this.handleDialogClose}

@@ -16,11 +16,11 @@ const style = {
         margin: 5
     },
     paper: {
-        padding: 0, 
+        padding: 0,
         position:'relative',
-        width:420, 
+        width:420,
         height:440,
-        float:'left', 
+        float:'left',
         marginRight:20,
         cursor: 'crosshair',
         display:'inline-block'
@@ -55,7 +55,7 @@ export default class Goal extends React.Component {
             return null
         }
         return Object.keys(shots).map( (item, key) => (
-            < Shot key={item} index={item} details={shots[item]} removeShot={this.props.removeShot} /> 
+            < Shot key={item} index={item} details={shots[item]} removeShot={this.props.removeShot} paperWidth={style.paper.width} paperHeight={style.paper.height}/> 
         ))
     }
 
@@ -102,13 +102,13 @@ export default class Goal extends React.Component {
                         shots={shots}
                         slider={this.props.slider}
                         heatMap={this.props.heatMap}
-                        heatMapLength={this.props.heatMapLength}
+                        heatMapLength={appState.data[appState.activeData].heatmapGrid}
                         paperWidth={style.paper.width}
                         paperHeight={style.paper.height}
                     />}
                     
                     <div className="goal-container">
-                        {this.props.goalie ?
+                        {this.props.appState.data[this.props.appState.activeData].goalie ?
                         <img alt="Goalie Rightie" src={require('../images/GoalieRight.png')} className="goalie-rightie" /> :
                         <img alt="Goalie Leftie" src={require('../images/GoalieLeft.png')} className="goalie-leftie" />}
                         <img alt="GoalImage" src={require('../images/LacrosseGoalFinal.jpg')} className="goal-image" id="goal" />
@@ -146,14 +146,14 @@ export default class Goal extends React.Component {
                     <div className="legend-container">
                         <div className="legend-text">Grid Length (2x2 up to 15x15)</div>
                         <input
-                            style={{width:200,margin:'auto'}} 
+                            style={{width:200,margin:'auto'}}
                             id='quads'
-                            onChange={this.changeGridNumber}
-                            className='w-input' 
-                            min="2" max="15" 
+                            onChange={this.props.changeHeatmapGrid}
+                            className='w-input'
+                            min="2" max="15"
                             name="quads"
                             type="number"
-                            value={this.props.heatMapLength}
+                            value={appState.data[appState.activeData].heatmapGrid}
                             ref={(input) => { this.gridInput = input }} 
                             placeholder="Grid Length" 
                         />

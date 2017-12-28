@@ -87,6 +87,7 @@ export default class DrawerSimpleExample extends React.Component {
                                     name={"goalie"}
                                     onToggle={this.props.switchGoalie}
                                     style={styles.general}
+                                    toggled={!this.props.goalieResult}
                                 />
                                 <p>Leftie</p>
                             </div>

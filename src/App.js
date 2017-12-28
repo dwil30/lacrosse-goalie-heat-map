@@ -31,7 +31,9 @@ class App extends React.Component {
                     name: 'Demo map',
                     shots: {},
                     filter: {},
-                    updated: 'No data',
+                    updated: '0',
+                    goalie: true,
+                    heatmapGrid: 3,
                 },
             ],
             activeData: 0,
@@ -139,6 +141,16 @@ class App extends React.Component {
     }
     //finish work with login and user
 
+    switchGoalie = () => {
+        const updated = Date.now();
+        let newData = [...this.state.data];
+        newData[this.state.activeData].goalie = !newData[this.state.activeData].goalie;
+        newData[this.state.activeData].updated = updated;
+
+        this.setState({
+            data: newData
+        })
+    }
 
     changeActiveData = (to) => {
         this.setState({ activeData: to})
@@ -156,7 +168,7 @@ class App extends React.Component {
         })
     }
 
-    addShot = (e, shotResultToggle, goalie) => {
+    addShot = (e, shotResultToggle) => {
         //get relative x, y coordinates of click
         var container = document.getElementById("goal");
         var target = e.target || e.srcElement,
@@ -169,7 +181,7 @@ class App extends React.Component {
 
         // add in our new shot
         var shotValue = shotResultToggle;
-        var goalieValue = goalie;
+        var goalieValue = this.state.data[this.state.activeData].goalie
         const timestamp = Date.now();
 
         const shotClick = {
@@ -231,6 +243,8 @@ class App extends React.Component {
             shots: {},
             filter: {},
             updated: '',
+            goalie: true,
+            heatmapGrid: 3,
         })
         newData[this.state.activeData].updated = updated;
         
@@ -248,14 +262,28 @@ class App extends React.Component {
                     "name": 'new map',
                     "shots": {},
                     "filter": {},
-                    "updated": "",
+                    "updated": "0",
+                    goalie: true,
+                    heatmapGrid: 3,
                 }
             ]
         })
     }
+    
+    changeHeatmapGrid = (e) => {
+        let newData = [...this.state.data];
+        const updated = Date.now();
+
+        newData[this.state.activeData].heatmapGrid = e.target.value;
+
+        newData[this.state.activeData].updated = updated;
+        this.setState({
+            data: newData
+        })
+    }
 
     render() {
-        console.log(this.state);
+        // console.log(this.state);
 
         return (
             <div className="body">
@@ -270,6 +298,8 @@ class App extends React.Component {
                                 removeShot={this.removeShot}
                                 addNewMap={this.addNewMap}
                                 saveName={this.saveName}
+                                switchGoalie={this.switchGoalie}
+                                changeHeatmapGrid={this.changeHeatmapGrid}
                                 {...props}
                             />}/>
                             <Route exact path='/dashboard' component={ (props) => <List 
