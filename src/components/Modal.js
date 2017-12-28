@@ -13,7 +13,7 @@ export default class Modal extends React.Component {
         onClick={this.props.handleDialogClose}
       />,
       <FlatButton
-        label="Remove Data Points"
+        label="Delete Heat Map"
         onClick={this.props.clearShots}
       />,
     ];
@@ -26,7 +26,7 @@ export default class Modal extends React.Component {
           modal={true}
           open={this.props.open}
         >
-          Removing all data points cannot be undone. 
+          Deleting a heat map cannot be undone.  
         </Dialog>
       </div>
     );

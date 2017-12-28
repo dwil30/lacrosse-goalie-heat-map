@@ -169,7 +169,7 @@ export default class Goal extends React.Component {
                             </div>
                     </div>  */}
                     <div className="legend-container">
-                             <RaisedButton backgroundColor={'#ff00004d'} onClick={this.props.handleDialogOpen} label="Remove All Shots" className="options-button w-button" style={{position:'absolute',bottom:0,right:20}} />
+                             <RaisedButton backgroundColor={'#ff00004d'} onClick={this.props.handleDialogOpen} label="Delete Heat Map" className="options-button w-button" style={{position:'absolute',bottom:0,right:20}} />
                              <RaisedButton onClick={this.props.closeHeatmap} label="Edit Heatmap" className="options-button w-button" style={{margin:'auto'}} />
                     </div>        
                 </div> : <div>
