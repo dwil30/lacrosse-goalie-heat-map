@@ -1,9 +1,18 @@
 // This is just some sample data so you don't have to think of your own!
 
-const shots = {};
+const sampleData = {
+    id: 'sampleData',
+    shots: {},
+    filter: {},
+    name: 'Sample data',
+    updated: '',
+};
+
+
+
 
 for (var x = 0; x < 150; x++) {
-  shots[x] = {
+  sampleData.shots[x] = {
       xCoor:Math.floor(Math.random() * 420),
       yCoor:Math.floor(Math.random() * 440),
       shotResult: (Math.random() >= 0.4),
@@ -11,4 +20,7 @@ for (var x = 0; x < 150; x++) {
   }
 }
 
-export default shots;
+
+
+
+export default sampleData;

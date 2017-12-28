@@ -1,6 +1,7 @@
 import Rebase from 're-base';
 import firebase from 'firebase';
 
+
 const config = {
     apiKey: "AIzaSyAeFREEwxlzE0haKb9rOt91BQia3Ceyjrk",
     authDomain: "lax-goalie-rat.firebaseapp.com",
@@ -12,6 +13,7 @@ const config = {
 
 const app = firebase.initializeApp(config)
 const base = Rebase.createClass(app.database())
+
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
 const twitterProvider = new firebase.auth.TwitterAuthProvider();
 const googleProvider = new firebase.auth.GoogleAuthProvider();

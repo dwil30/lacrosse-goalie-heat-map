@@ -19,7 +19,7 @@ const styles = {
     }
 }
 
-class NavBar extends React.Component {
+class NavBar extends React.PureComponent {
 
     render() {
         return (
@@ -34,7 +34,7 @@ class NavBar extends React.Component {
                     targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
                     anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
                     >
-                        <Link to='/'><MenuItem primaryText="Create New Heat Map" /></Link>
+                        <Link to='/' onClick={this.props.addNewMap}><MenuItem primaryText="Create New Heat Map" /></Link>
                         <Link to='/dashboard'><MenuItem primaryText="View Saved Heat Maps" /></Link>
                         <Link to='/about'><MenuItem primaryText="About" /></Link>
                         <Divider />    

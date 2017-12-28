@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Heatmap extends React.PureComponent {
+export default class Heatmap extends React.Component {
 
     getBoxes = () => {
 
@@ -19,6 +19,10 @@ export default class Heatmap extends React.PureComponent {
                 goal: 0,
                 save: 0,
             });
+        }
+
+        if ( boxList.length === 0) {
+            return null
         }
 
         const shots = this.props.shots;

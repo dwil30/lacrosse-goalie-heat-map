@@ -3,7 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import Shot from './Shot';
-import Login from './Login';
+// import Login from './Login';
 import Modal from './Modal';
 import Heatmap from './Heatmap';
 import Slider from 'material-ui/Slider';
@@ -50,14 +50,56 @@ export default class Goal extends React.Component {
         this.props.heatMapBoxNumber(e);
     }
 
+    getShots = (shots) => {
+        if (!shots || shots.length===0) {
+            return null
+        }
+        return Object.keys(shots).map( (item, key) => (
+            < Shot key={item} index={item} details={shots[item]} removeShot={this.props.removeShot} /> 
+        ))
+    }
+
+    changeNameInput = (e) => {
+        this.setState({
+            nameInputValue: e.target.value
+        })
+    }
+
+    getSaveNameField = () => {
+        const saved = this.props.appState.data[this.props.appState.activeData].name;
+
+        return (
+            <div className='legend-container'>
+                <TextField
+                    id="text-field-controlled"
+                    hintText="Heat Map Name"
+                    style={{ marginRight: 10 }}
+                    onChange={this.props.saveName}
+                    value={saved}
+                />
+                <br />
+                {/* <RaisedButton label="Save Heat Map" className="options-button w-button" style={buttonStyle} onClick={() => this.props.saveName(value)}/> */}
+            </div>
+        )
+    }
+
+
+
     render() {
+        const appState = this.props.appState;
+        const activeData = appState.activeData;
+        let shots = []
+        if (appState.data[activeData]) {
+            shots = appState.data[activeData].shots;
+        }
+
         return (
             <div className="main-body" style={this.props.drawer ? style.main : style.mainNoPadding}>
                 <Paper onClick={this.props.addShot} style={style.paper}>
                     
                     {this.props.heatMap &&
                     <Heatmap
-                        shots={this.props.shots}
+                        shots={shots}
                         slider={this.props.slider}
                         heatMap={this.props.heatMap}
                         heatMapLength={this.props.heatMapLength}
@@ -71,27 +113,16 @@ export default class Goal extends React.Component {
                         <img alt="Goalie Leftie" src={require('../images/GoalieLeft.png')} className="goalie-leftie" />}
                         <img alt="GoalImage" src={require('../images/LacrosseGoalFinal.jpg')} className="goal-image" id="goal" />
                         
-                        {
-                        Object
-                        .keys(this.props.shots)
-                        .map(key => <Shot key={key} index={key} details={this.props.shots[key]} removeShot={this.props.removeShot}/>)
-                        }
+                        {this.getShots(shots)}
                         
                     </div>
                 </Paper>
                 <div className="right-container">
                 {this.props.heatMap ?
                  <div> 
-                    {!this.props.authenticated ?
-                        <Link to='/login'><FlatButton label='login to save your heatmap'/></Link> : 
-                        <div className='legend-container'>
-                             <TextField
-                              hintText="Heat Map Name"
-                              style={{marginRight:10}}     
-                            /><br />    
-                            
-                            <RaisedButton label="Save Heat Map" className="options-button w-button" />
-                        </div>
+                    {!this.props.appState.authenticated ?
+                        <Link to='/login'><FlatButton label='login to save your heatmap'/></Link> :
+                        this.getSaveNameField()
                     }        
                     <div className="legend-container">
                         <div className="legend-text">Save Percentage</div>
@@ -108,13 +139,13 @@ export default class Goal extends React.Component {
                     <div className="slider-container">
                         <div className="legend-text">Heat Map Opacity: {this.props.slider}</div>
                         <Slider className='slider' style={style.slider} value={this.props.slider} onChange={this.props.handleFirstSlider} />
-                    </div>  
+                    </div>
                             
                     
         
                     <div className="legend-container">
                         <div className="legend-text">Grid Length (2x2 up to 15x15)</div>
-                        <input 
+                        <input
                             style={{width:200,margin:'auto'}} 
                             id='quads'
                             onChange={this.changeGridNumber}
@@ -136,7 +167,7 @@ export default class Goal extends React.Component {
                                  <div className='Google'>Google+</div>
                                  <div className='Pinterest'>Pinterest</div>
                             </div>
-                    </div>  */}           
+                    </div>  */}
                     <div className="legend-container">
                              <RaisedButton backgroundColor={'#ff00004d'} onClick={this.props.handleDialogOpen} label="Remove All Shots" className="options-button w-button" style={{position:'absolute',bottom:0,right:20}} />
                              <RaisedButton onClick={this.props.closeHeatmap} label="Edit Heatmap" className="options-button w-button" style={{margin:'auto'}} />

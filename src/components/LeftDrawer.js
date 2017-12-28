@@ -69,11 +69,13 @@ export default class DrawerSimpleExample extends React.Component {
                             <div className="control-container">
                                 <p>Save</p>
                                 <Toggle
-                                onClick={this.props.switchResult}
-                                thumbStyle={styles.thumbOff}
-                                thumbSwitchedStyle={styles.thumbSwitched}
-                                trackSwitchedStyle={styles.trackSwitched}
-                                style={styles.general} />
+                                    onToggle={this.props.switchShotResult}
+                                    thumbStyle={styles.thumbOff}
+                                    thumbSwitchedStyle={styles.thumbSwitched}
+                                    trackSwitchedStyle={styles.trackSwitched}
+                                    style={styles.general}
+                                    toggled={!this.props.shotResult}
+                                />
                                 <p>Goal</p>
                             </div>
                         </div>
@@ -82,9 +84,9 @@ export default class DrawerSimpleExample extends React.Component {
                             <div className="control-container">
                                 <p>Rightie</p>
                                 <Toggle
-                                name={"goalie"}
-                                onClick={this.props.switchGoalie}
-                                style={styles.general}
+                                    name={"goalie"}
+                                    onToggle={this.props.switchGoalie}
+                                    style={styles.general}
                                 />
                                 <p>Leftie</p>
                             </div>
@@ -100,9 +102,9 @@ export default class DrawerSimpleExample extends React.Component {
                     
                         {this.state.optional &&
                         
-                        <div class="optional-data-container">
-                            <div class="shot-item-container">
-                                <h6 class="itemheader">Shot Distance</h6>
+                        <div className="optional-data-container">
+                            <div className="shot-item-container">
+                                <h6 className="itemheader">Shot Distance</h6>
                                 <RadioButtonGroup name="shotDistance">
                                     <RadioButton value="3-5" label="3-5 yards" labelStyle={styles.labelStyle} style={styles.radioButton}/>
                                     <RadioButton value="5-10" label="5-10 yards" labelStyle={styles.labelStyle} style={styles.radioButton}/>
@@ -112,22 +114,22 @@ export default class DrawerSimpleExample extends React.Component {
                             </div>
       
                             
-                            <div class="shot-item-container">
-                                <h6 class="itemheader">Bounce Shot</h6>
+                            <div className="shot-item-container">
+                                <h6 className="itemheader">Bounce Shot</h6>
                                 <RadioButtonGroup name="shooterHand">
                                     <RadioButton value="Yes" label="Yes" labelStyle={styles.labelStyle} style={styles.radioButton}/>
                                     <RadioButton value="No" label="No" labelStyle={styles.labelStyle} style={styles.radioButton}/>
                                 </RadioButtonGroup>
                                 
-                                <h6 class="itemheader">Shooter Hand</h6>
+                                <h6 className="itemheader">Shooter Hand</h6>
                                 <RadioButtonGroup name="shooterHand">
                                     <RadioButton value="Right" label="Right" labelStyle={styles.labelStyle} style={styles.radioButton}/>
                                     <RadioButton value="Left" label="Left" labelStyle={styles.labelStyle} style={styles.radioButton}/>
                                 </RadioButtonGroup>
                             </div>
                             
-                            <div class="shot-item-container">
-                                <h6 class="itemheader">Shot Type</h6>
+                            <div className="shot-item-container">
+                                <h6 className="itemheader">Shot Type</h6>
                                 <RadioButtonGroup name="shooterHand">
                                     <RadioButton value="Overhand" label="Overhand" labelStyle={styles.labelStyle} style={styles.radioButton}/>
                                     <RadioButton value="Sidearm" label="Sidearm" labelStyle={styles.labelStyle} style={styles.radioButton}/>
@@ -135,8 +137,8 @@ export default class DrawerSimpleExample extends React.Component {
                                 </RadioButtonGroup>
                             </div>
                             
-                             <div class="shot-item-container">
-                                <h6 class="itemheader">Game Situation</h6>
+                            <div className="shot-item-container">
+                                <h6 className="itemheader">Game Situation</h6>
                                 <RadioButtonGroup name="shooterHand">
                                     <RadioButton value="Even" label="Even" labelStyle={styles.labelStyle} style={styles.radioButton}/>
                                     <RadioButton value="ManDown" label="Man Down" labelStyle={styles.labelStyle} style={styles.radioButton}/>

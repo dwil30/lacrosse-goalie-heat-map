@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { app } from '../base';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+// import Menu from 'material-ui/Menu';
+// import MenuItem from 'material-ui/MenuItem';
 import Snackbar from 'material-ui/Snackbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import NavBar from './NavBar'
@@ -9,21 +9,21 @@ import {Link, Redirect} from 'react-router-dom';
 import Paper from 'material-ui/Paper';
 //import TextField from 'material-ui/TextField';
 
-const style = {
-    paper: {
-        width: 'auto',
-        margin: 20,
-        padding: 20,
-        textAlign: 'center',
-        display: 'inline-block',
-    },
-    menu: {
-        maxWidth: 300,
-    },
-    button:{
-        margin:'auto'
-    }
-};
+// const style = {
+//     paper: {
+//         width: 'auto',
+//         margin: 20,
+//         padding: 20,
+//         textAlign: 'center',
+//         display: 'inline-block',
+//     },
+//     menu: {
+//         maxWidth: 300,
+//     },
+//     button:{
+//         margin:'auto'
+//     }
+// };
 
 class Login extends Component {
     
@@ -59,11 +59,12 @@ class Login extends Component {
       .then((user) => {
         if (user && user.email) {
           //this.loginForm.reset()
-          this.setState({redirect: true})
-          this.setCurrentUser(user)
+          this.setState({redirect: true});
+          this.props.setCurrentUser(user);
         }
       })
       .catch((error) => {
+        console.log(error);
         this.setState({messageOpen:true, errorMessage: error.message});
       })
   }
