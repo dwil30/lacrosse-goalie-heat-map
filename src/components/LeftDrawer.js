@@ -58,7 +58,7 @@ export default class DrawerSimpleExample extends React.Component {
             <div>
                 <Drawer width={285} open={this.props.drawer}>
                     <div className="panel-top">
-                        <img alt="Logo Text" src={require("../images/logo-text.png")} className="logopic"/>
+                        <img alt="Logo Text" src={require("../images/HeatMapsLogo.png")} className="logopic"/>
                     </div>
                      <div className="panel-blue">
                         <h2 className="datah2">Add Data Point</h2>
