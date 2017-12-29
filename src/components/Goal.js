@@ -54,8 +54,16 @@ export default class Goal extends React.Component {
         if (!shots || shots.length===0) {
             return null
         }
+
         return Object.keys(shots).map( (item, key) => (
-            < Shot key={item} index={item} details={shots[item]} removeShot={this.props.removeShot} paperWidth={style.paper.width} paperHeight={style.paper.height}/> 
+            < Shot 
+                key={item} 
+                index={item} 
+                details={shots[item]} 
+                removeShot={this.props.removeShot} 
+                paperWidth={style.paper.width} 
+                paperHeight={style.paper.height}
+            /> 
         ))
     }
 
@@ -83,15 +91,50 @@ export default class Goal extends React.Component {
         )
     }
 
+    filterShots = (shots) => {
+
+        const heatMap = this.props.heatMap;
+        const filter = this.props.filter;
+
+        if (!heatMap) { //SHOTS WITHOUT FILTER
+            return shots;
+        } else if (heatMap && (Object.keys(filter).length === 0)) {//SHOTS WITHOUT FILTER
+            return shots;
+        } else {
+            const newShots = {};
+            let filtersCount = Object.keys(filter).length;
+
+            for (let key in shots) {
+                const shotFilters = shots[key].shotFilter;
+                let equalCount = 0;
+                for (let shotFilter in shotFilters) {
+                    if (filter.hasOwnProperty(shotFilter)) {
+                        if (filter[shotFilter] === shotFilters[shotFilter]) {
+                            equalCount = equalCount + 1;
+                        }
+                    }
+                }
+                
+                if (equalCount === filtersCount && equalCount !== 0  ) {
+                    newShots[key] = shots[key];
+                }
+            }
+            return newShots;
+        }
+    }
 
 
     render() {
         const appState = this.props.appState;
         const activeData = appState.activeData;
         let shots = []
+
         if (appState.data[activeData]) {
             shots = appState.data[activeData].shots;
         }
+
+        const filteredShots = this.filterShots(shots);
+
 
         return (
             <div className="main-body" style={this.props.drawer ? style.main : style.mainNoPadding}>
@@ -99,7 +142,7 @@ export default class Goal extends React.Component {
                     
                     {this.props.heatMap &&
                     <Heatmap
-                        shots={shots}
+                        shots={filteredShots}
                         slider={this.props.slider}
                         heatMap={this.props.heatMap}
                         heatMapLength={appState.data[appState.activeData].heatmapGrid}
@@ -113,7 +156,7 @@ export default class Goal extends React.Component {
                         <img alt="Goalie Leftie" src={require('../images/GoalieLeft.png')} className="goalie-leftie" />}
                         <img alt="GoalImage" src={require('../images/LacrosseGoalFinal.jpg')} className="goal-image" id="goal" />
                         
-                        {this.getShots(shots)}
+                        {this.getShots(filteredShots)}
                         
                     </div>
                 </Paper>

@@ -265,6 +265,7 @@
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   opacity: 0.92;
+  cursor: default;
 }
 
 .heat-map-box {

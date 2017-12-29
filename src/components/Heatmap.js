@@ -80,7 +80,11 @@ export default class Heatmap extends React.Component {
                 </div>
             )
         })
-    } 
+    }
+
+    heatmapClick = (e) => {
+        e.preventDefault();
+    }
 
     render() {
         const styles = {
@@ -89,7 +93,7 @@ export default class Heatmap extends React.Component {
         
         return (
             <div>
-                <div className="heat-map-container" style={styles}>
+                <div className="heat-map-container" style={styles} onClick={this.heatmapClick}>
                     {this.getBoxes()}
                 </div>
             </div>            

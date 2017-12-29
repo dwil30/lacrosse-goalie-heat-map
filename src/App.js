@@ -168,7 +168,7 @@ class App extends React.Component {
         })
     }
 
-    addShot = (e, shotResultToggle) => {
+    addShot = (e, shotValue, shotFilter) => {
         //get relative x, y coordinates of click
         var container = document.getElementById("goal");
         var target = e.target || e.srcElement,
@@ -180,7 +180,6 @@ class App extends React.Component {
             offsetY = e.clientY - borderTopWidth - rect.top;
 
         // add in our new shot
-        var shotValue = shotResultToggle;
         var goalieValue = this.state.data[this.state.activeData].goalie
         const timestamp = Date.now();
 
@@ -188,6 +187,7 @@ class App extends React.Component {
             xCoor: offsetX,
             yCoor: offsetY,
             shotResult: shotValue,
+            shotFilter: shotFilter,
             goalie: goalieValue
         }
 

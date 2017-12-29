@@ -44,7 +44,8 @@ export default class Main extends React.PureComponent {
             drawer: true,
             shotResult: true, //true = Save, false = Goal
             // heatMapLength: 3, 
-            editMode:false
+            editMode:false,
+            filter: {}
         }
     }
 
@@ -84,12 +85,28 @@ export default class Main extends React.PureComponent {
     }
 
     addShot = (e) => {
-        const shotResult = this.state.shotResult
-        this.props.addShot(e, shotResult )
+        if (this.state.heatMap === false) {
+            const shotResult = this.state.shotResult
+            const shotFilter = this.state.filter
+            this.props.addShot(e, shotResult, shotFilter)
+        }
+    }
+
+    clickOnFilterRadio = (name, value) => {
+        let newFilter = { ...this.state.filter };
+        if (value === this.state.filter[name]) {
+            delete newFilter[name]
+        } else {
+            newFilter[name] = value;
+        }
+
+        this.setState({
+            filter: newFilter
+        })
     }
 
     render() {
-        // console.log( this.props.appState.data[this.props.appState.activeData].goalie );
+        // console.log(this.state.heatMap);
         return (
             <div className='body'>
                 <NavBar 
@@ -104,10 +121,13 @@ export default class Main extends React.PureComponent {
                     drawer={this.state.drawer}
                     goalieResult={this.props.appState.data[this.props.appState.activeData].goalie}
                     shotResult={this.state.shotResult}
+                    clickOnFilterRadio={this.clickOnFilterRadio}
+                    filter={this.state.filter}
                 />
                 <Goal
                     // STATE:
                     appState={this.props.appState}
+                    filter={this.state.filter}
                     // ACTIONS:
                     addShot={this.addShot}
                     loadSampleShots={this.props.loadSampleShots}
