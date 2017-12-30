@@ -46,6 +46,16 @@ const style = {
 
 export default class Goal extends React.Component {
 
+    constructor() {
+        super();
+        this.state = {
+            modalOpen: false,
+            modalAction: '',
+            mapName: undefined,
+        }
+    }
+
+
     changeGridNumber = (e) => {
         this.props.heatMapBoxNumber(e);
     }
@@ -73,8 +83,38 @@ export default class Goal extends React.Component {
         })
     }
 
+
+    saveMapName = () => {
+        // console.log('saveMapName');
+        this.props.saveName(this.state.mapName);
+    }
+
+    changeMapName = (e) => {
+        this.setState({
+            mapName: e.target.value
+        })
+    }
+
     getSaveNameField = () => {
-        const saved = this.props.appState.data[this.props.appState.activeData].name;
+        // console.log(this.props.appState.data[this.props.appState.activeData].name);
+        // console.log(this.state.mapName);
+        const savedName = this.props.appState.data[this.props.appState.activeData].name;
+        const newName = this.state.mapName;
+        let name;
+        let buttonVizible = false;
+
+        if (newName === undefined) {
+            // console.log(1);
+            name = savedName;
+        } else if (newName !== savedName) {
+            // console.log(2);
+            name = newName;
+            buttonVizible = true;
+        } else if (newName === savedName) {
+            // console.log(3);
+            name = savedName;
+            buttonVizible = false;
+        }
 
         return (
             <div className='legend-container'>
@@ -82,11 +122,11 @@ export default class Goal extends React.Component {
                     id="text-field-controlled"
                     hintText="Heat Map Name"
                     style={{ marginRight: 10 }}
-                    onChange={this.props.saveName}
-                    value={saved}
+                    onChange={this.changeMapName}
+                    value={name}
                 />
                 <br />
-                {/* <RaisedButton label="Save Heat Map" className="options-button w-button" style={buttonStyle} onClick={() => this.props.saveName(value)}/> */}
+                {buttonVizible ? <RaisedButton label="Save Heat Map" className="options-button w-button" onClick={this.saveMapName} /> : null}
             </div>
         )
     }
@@ -123,6 +163,19 @@ export default class Goal extends React.Component {
         }
     }
 
+    madeModalState = (visible, action) => {
+        if (visible === 'OPEN') {
+            this.setState({
+                modalOpen : true,
+                modalAction: action
+            })
+        } else if (visible === 'CLOSE') {
+            this.setState({
+                modalOpen: false,
+            })
+        }
+        
+    }
 
     render() {
         const appState = this.props.appState;
@@ -212,23 +265,26 @@ export default class Goal extends React.Component {
                             </div>
                     </div>  */}
                     <div className="legend-container">
-                             <RaisedButton backgroundColor={'#ff00004d'} onClick={this.props.handleDialogOpen} label="Delete Heat Map" className="options-button w-button" style={{position:'absolute',bottom:0,right:20}} />
-                             <RaisedButton onClick={this.props.closeHeatmap} label="Edit Heatmap" className="options-button w-button" style={{margin:'auto'}} />
+                        <RaisedButton backgroundColor={'#ff00004d'} onClick={() => this.madeModalState('OPEN', 'DELETE_HEATMAP')} label="Delete Heat Map" className="options-button w-button" style={{position:'absolute',bottom:0,right:20}} />
+                        <RaisedButton onClick={this.props.closeHeatmap} label="Edit Heatmap" className="options-button w-button" style={{margin:'auto'}} />
                     </div>        
                 </div> : <div>
                         
                     <RaisedButton onClick={this.props.handleCreateMap} label="Show Heat Map" primary={true}  className="options-button w-button" /><br/>
                         
-                    <RaisedButton onClick={this.props.handleDialogOpen} label="Remove All Shots" className="options-button w-button" /> <br/>
+                    {/* <RaisedButton onClick={this.props.handleCreateMap} label="Remove All Shots" className="options-button w-button" /> <br/> */}
                 
                     <RaisedButton onClick={this.props.loadSampleShots} label="Load Samples" className="options-button w-button" />    
                     
                 </div>
                 }
-                    <Modal 
-                    handleDialogClose={this.props.handleDialogClose} 
-                    open={this.props.open}
-                    clearShots={this.props.clearShots} />  
+                    <Modal
+                        madeModalClose={() => this.madeModalState('CLOSE')}
+                        modalOpen={this.state.modalOpen}
+                        modalAction={this.state.modalAction}
+                        clearShots={this.props.clearShots}
+                        deleteActiveMap={this.props.deleteActiveMap}
+                    />
                 </div>
                 
             </div>

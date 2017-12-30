@@ -46,33 +46,9 @@ export default class List extends React.PureComponent {
         if ( ms === '0') {
             return 'no data'
         } else {
-            return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} - ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+            return `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
         }
     }
-
-    // getLinksOnHeatmaps = (data) => {
-    //     if (!data) {
-    //         return <div>Map not found</div>
-    //     }
-
-    //     return data.map( (item, i) => {
-    //         let activeStyle={};
-    //         if (i===this.props.appState.activeData) {
-    //             activeStyle = {
-    //                 outline: '2px solid red'
-    //             }
-    //         }
-    //         return (
-    //             <div className="heatmapitem" key={item.name + i} style={activeStyle}>
-    //                 <Link to='/' onClick={() => this.props.changeActiveData(i) }>
-    //                     <img alt='heat map' src={require('../images/map.png')} className="heatimage" />
-    //                     <h2 className="heatmaph2">{item.name}</h2>
-    //                     <div className="updatedtext">Last Updated: { this.getUpdated(item.updated) } </div>
-    //                 </Link>
-    //             </div>
-    //         )
-    //     })
-    // }
 
     getShots = (shots) => {
         if (!shots || shots.length === 0) {

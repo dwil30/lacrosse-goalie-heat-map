@@ -2,22 +2,24 @@
 
 const sampleData = {
     id: 'sampleData',
-    shots: {},
+    shots: [],
     filter: {},
     name: 'Sample data',
     updated: '',
+    goalie: true,
+    heatmapGrid: 3,
 };
 
 
 
 
-for (var x = 0; x < 150; x++) {
-  sampleData.shots[x] = {
-      xCoor:Math.floor(Math.random() * 420),
-      yCoor:Math.floor(Math.random() * 440),
-      shotResult: (Math.random() >= 0.4),
-      goalie: true,
-  }
+for (var x = 0; x < 80; x++) {
+    sampleData.shots[`shot-${x}`] = {
+        xCoor:Math.floor(Math.random() * 420),
+        yCoor:Math.floor(Math.random() * 440),
+        shotResult: (Math.random() >= 0.4),
+        goalie: true,
+    }
 }
 
 

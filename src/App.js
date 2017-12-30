@@ -4,11 +4,10 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Main from './components/Main';
 import { app, base} from './base';
-import Login from './components/Login'
-import Logout from './components/Logout'
-import List from './components/List'
-import sampleData from './sample-shots'
-
+import Login from './components/Login';
+import Logout from './components/Logout';
+import List from './components/List';
+import sampleData from './sample-shots';
 
 const muiTheme = getMuiTheme({
     fontFamily: 'roboto',
@@ -156,12 +155,11 @@ class App extends React.Component {
         this.setState({ activeData: to})
     }
 
-    saveName = (e) => {
-        const value = e.target.value;
-        const updated = Date.now();
+    saveName = (value) => {
+        // const updated = Date.now();
         let newData = [...this.state.data];
         newData[this.state.activeData].name = value;
-        newData[this.state.activeData].updated = updated;
+        // newData[this.state.activeData].updated = updated;
 
         this.setState({
             data: newData
@@ -253,22 +251,6 @@ class App extends React.Component {
             activeData: (newData.length - 1)
         })
     }
-
-    checkData = () => {
-        this.setState({
-            data: [
-                {
-                    "id": "",
-                    "name": 'new map',
-                    "shots": {},
-                    "filter": {},
-                    "updated": "0",
-                    goalie: true,
-                    heatmapGrid: 3,
-                }
-            ]
-        })
-    }
     
     changeHeatmapGrid = (e) => {
         let newData = [...this.state.data];
@@ -282,9 +264,30 @@ class App extends React.Component {
         })
     }
 
-    render() {
-        // console.log(this.state);
+    deleteActiveMap = () => {
+        let newData = [...this.state.data];
+        if (newData.length === 1) {
+            // console.log('last array');
+            newData[this.state.activeData] = {
+                "id": "",
+                "name": 'new empty map',
+                "shots": {},
+                "filter": {},
+                "updated": "0",
+                goalie: true,
+                heatmapGrid: 3,
+            }
 
+        } else {
+            newData.splice([this.state.activeData], 1)
+        }
+        this.setState({
+            data: newData,
+            activeData: 0
+        })
+    }
+
+    render() {
         return (
             <div className="body">
                 <MuiThemeProvider className="body" muiTheme={muiTheme}>
@@ -300,6 +303,7 @@ class App extends React.Component {
                                 saveName={this.saveName}
                                 switchGoalie={this.switchGoalie}
                                 changeHeatmapGrid={this.changeHeatmapGrid}
+                                deleteActiveMap={this.deleteActiveMap}
                                 {...props}
                             />}/>
                             <Route exact path='/dashboard' component={ (props) => <List 

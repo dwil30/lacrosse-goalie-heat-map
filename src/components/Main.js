@@ -31,8 +31,6 @@ export default class Main extends React.PureComponent {
     constructor(props) {
         super(props);
         this.handleToggle = this.handleToggle.bind(this);
-        this.handleDialogOpen = this.handleDialogOpen.bind(this);
-        this.handleDialogClose = this.handleDialogClose.bind(this);
         this.handleCreateMap = this.handleCreateMap.bind(this);
         this.handleFirstSlider = this.handleFirstSlider.bind(this);
         this.closeHeatmap = this.closeHeatmap.bind(this);
@@ -40,10 +38,8 @@ export default class Main extends React.PureComponent {
         this.state = {
             slider:0.9,
             heatMap: false,
-            open: false,
             drawer: true,
             shotResult: true, //true = Save, false = Goal
-            // heatMapLength: 3, 
             editMode:false,
             filter: {}
         }
@@ -55,14 +51,6 @@ export default class Main extends React.PureComponent {
     
     switchShotResult = () => {
         this.setState({ shotResult: !!!(this.state.shotResult)});
-    }
-    
-    handleDialogOpen(){
-        this.setState({open: true});
-    }
-
-    handleDialogClose(){
-        this.setState({open: false});
     }
     
     handleCreateMap(){
@@ -135,15 +123,13 @@ export default class Main extends React.PureComponent {
                     removeShot={this.props.removeShot}
                     saveName={this.props.saveName}
                     changeHeatmapGrid={this.props.changeHeatmapGrid}
+                    deleteActiveMap={this.props.deleteActiveMap}
                     // OLD
                     drawer={this.state.drawer}
                     // goalieResult={this.props.appState.data[this.props.appState.activeData].goalie}
                     handleCreateMap={this.handleCreateMap}
-                    handleDialogOpen={this.handleDialogOpen}
-                    handleDialogClose={this.handleDialogClose}
                     handleFirstSlider={this.handleFirstSlider}
                     heatMap={this.state.heatMap}
-                    open={this.state.open}
                     slider={this.state.slider}
                     // inputRef={input => this.inputElement = input}
                     heatMapBoxNumber={this.heatMapBoxNumber}
