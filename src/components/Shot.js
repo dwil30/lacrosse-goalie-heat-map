@@ -1,6 +1,6 @@
 import React from 'react';
-import IconButton from 'material-ui/IconButton';
-import FontIcon from 'material-ui/FontIcon';
+import IconButton from '@material-ui/core/IconButton';
+import Dot from '@material-ui/icons/FiberManualRecord';
 
 export default class Shot extends React.Component {
 
@@ -37,30 +37,26 @@ export default class Shot extends React.Component {
 
             <div>
                 {isGoal ? (
-                    <IconButton className="save" style={styles.button}>
-                        <FontIcon 
+                    
+                     <IconButton aria-label="Save" style={styles.button}>
+                        <Dot 
                             id={index} 
                             color={'#70c60b'}
                             hoverColor={'#5da20d'}
-                            className="material-icons"
                             onClick={ (e) => this.removeShot(e, index)} 
-                            >
-                            fiber_manual_record
-                        </FontIcon>
+                            />
                     </IconButton>
                     )
                     
                     : (  
-                        <IconButton className="goal" style={styles.button}>
-                        <FontIcon 
+                    
+                     <IconButton aria-label="Goale" style={styles.button}>
+                        <Dot 
                             id={index} 
                             color={'#e82121'} 
                             hoverColor={'#c11414'} 
-                            className="material-icons" 
                             onClick={ (e) => this.removeShot(e, index)} 
-                        >
-                            fiber_manual_record
-                        </FontIcon>
+                            />
                     </IconButton>
                     )
                 }

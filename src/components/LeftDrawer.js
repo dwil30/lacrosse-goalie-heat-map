@@ -1,48 +1,81 @@
-import React from 'react';
-import Drawer from 'material-ui/Drawer';
-import Toggle from 'material-ui/Toggle';
-import FontIcon from 'material-ui/FontIcon';
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { withRouter } from 'react-router-dom';
+import Collapse from '@material-ui/core/Collapse';
+import Drawer from '@material-ui/core/Drawer';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Switch from '@material-ui/core/Switch';
 
-const styles = {
-  block: {
-    maxWidth: 250,
+const drawerWidth = 350;
+
+const styles = theme => ({
+  root: {
+    display:'flex'
   },
-  general: {
-    marginTop: -10,
-    width: 55
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    textAlign: 'center',
   },
-  thumbOff: {
-    backgroundColor: '#70c60b',
+  drawerPaper: {
+    width: drawerWidth,
   },
-  thumbSwitched: {
-    backgroundColor: '#e82121',
+  content: {
+    padding: theme.spacing.unit * 3,
+    textAlign: 'left',
+    width:'100%'  
   },
-    trackSwitched: {
-    backgroundColor: '#ff9d9d',
-  },
-  radioButton: {
-    marginBottom: 5,
-  },
-    caretOpen: {
-        transform: 'rotate(-90deg)'
+  toolbar: theme.mixins.toolbar,
+  colorSwitchBase: {
+    color: '#74c847',
+    '&$colorChecked': {
+      color: '#f22126',
+      '& + $colorBar': {
+        backgroundColor: '#ff9d9e',
+      },
     },
-    caretClosed: {
-        transform: 'rotate(0deg)'
-    },
-    labelStyle: {
-        fontWeight:300, 
-        fontSize:11
+  },
+  formControl: {
+    margin: 0
+  },
+  group: {
+    margin: 0
+  },  
+  radio: {
+      padding:3
+  }, 
+h1: {
+    fontSize: 25,
+}, 
+h2: {
+    fontSize: 25,        
+}, 
+textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+  }, 
+signinButton:{
+    marginLeft:8,
+},
+    greyList:{
+        backgroundColor:'whitesmoke'
     }
-};
+});
 
-export default class DrawerSimpleExample extends React.Component {
+                        
+
+class LeftDrawer extends Component {
     
-    constructor(){
-        super();
-        this.state = {
-            optional: false,
-        }
+    state = {
+        optional: false,
     }
     
     clickRadio = (e) => {
@@ -60,55 +93,148 @@ export default class DrawerSimpleExample extends React.Component {
     
 
     render() {
+        const { classes } = this.props;
         // console.log(this.props.filter);
         return (
             <div>
-                <Drawer width={285} open={this.props.drawer}>
-                    <div className="panel-top">
-                        <img alt="Logo Text" src={require("../images/HeatMapsLogo.png")} className="logopic"/>
-                    </div>
-                     <div className="panel-blue">
-                        <h2 className="datah2">Add Data Point</h2>
-                     </div>
-                     <div className="panel-main">
-                        <div className="shot-item-container">
-                            <h6 className="itemheader">Shot Result</h6>
-                            <div className="control-container">
-                                <p>Save</p>
-                                <Toggle
-                                    onToggle={this.props.switchShotResult}
-                                    thumbStyle={styles.thumbOff}
-                                    thumbSwitchedStyle={styles.thumbSwitched}
-                                    trackSwitchedStyle={styles.trackSwitched}
-                                    style={styles.general}
-                                    toggled={!this.props.shotResult}
+                <Drawer
+                    className={classes.drawer}
+                    variant="permanent"
+                    classes={{
+                    paper: classes.drawerPaper,
+                    }}
+                >
+                    <div className={classes.toolbar} />  
+                        <div className="data-points-header">
+                            <h1 className="datah1">Data Points</h1>
+                        </div>
+                        <div className="data-points-container">
+                            <div className="data-point-item">
+                                <h4 className="data-point-heading-h4">Shot Result</h4>
+                                <div className={this.props.shotResult ? "label-text" : "label-text goal-text"}>Goal</div>
+                                <Switch
+                                  checked={this.props.shotResult}
+                                  onChange={this.props.handleChange('shotResult')}
+                                  value="shotResult"
+                                  classes={{
+                                    switchBase: classes.colorSwitchBase,
+                                    checked: classes.colorChecked,
+                                    bar: classes.colorBar,
+                                    }}    
                                 />
-                                <p>Goal</p>
+                                <div className={!this.props.shotResult ? "label-text" : "label-text save-text"}>Save</div>
+                            </div>
+                            <div className="data-point-item">
+                                <h4 className="data-point-heading-h4">Goalie</h4>
+                                <div className="label-text">Leftie</div>
+                                <Switch
+                                  checked={this.props.goalie}
+                                  onChange={this.props.handleChange('goalie')}
+                                  value="goalie"
+                                  color="primary"
+                                />
+                                <div className="label-text">Rightie</div>
                             </div>
                         </div>
-                        <div className="shot-item-container">
-                            <h6 className="itemheader">Goalie</h6>
-                            <div className="control-container">
-                                <p>Rightie</p>
-                                <Toggle
-                                    name={"goalie"}
-                                    onToggle={this.props.switchGoalie}
-                                    style={styles.general}
-                                    toggled={!this.props.goalieResult}
-                                />
-                                <p>Leftie</p>
-                            </div>
-                        </div>
-                    </div>
                     
-                    <div className="optional-block" onClick={this.showOptional}>
-                        <div className="subheader">Optional Data</div>
-                        <FontIcon 
-                             style={!this.state.optional ? styles.caretOpen : styles.caretClosed}
-                             className='material-icons caret'>keyboard_arrow_down</FontIcon>
+                       <List>
+                        <ListItem className={classes.greyList} button onClick={this.handleClick}>
+                            <ListItemText primary="Optional Data" />
+                            {this.state.open ? <ExpandLess /> : <ExpandMore />}
+                        </ListItem>
+                        <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                            <div className="data-points-container text-align-left">
+                    <div className="data-point-item optional-item">
+                        <h4 className="data-point-heading-h4">Shot Distance</h4>
+                        <FormControl component="fieldset" className={classes.formControl}>
+                           
+                              <RadioGroup
+                                aria-label="Shot Distance"
+                                name="shotDistance"
+                                className={classes.group}
+                                value={this.state.value}
+                                onChange={this.handleRadioChange}
+                              >
+                                <FormControlLabel value="3to5" control={<Radio onClick={this.clickRadio} className={classes.radio} color="primary" />} label="3-5 yards" />
+                                <FormControlLabel value="5to10" control={<Radio onClick={this.clickRadio} className={classes.radio}  color="primary" />} label="5-10 yards" />
+                                <FormControlLabel value="10to15" control={<Radio onClick={this.clickRadio} className={classes.radio}  color="primary" />} label="10-15 yards" />
+                                <FormControlLabel value="over15" control={<Radio onClick={this.clickRadio} className={classes.radio}  color="primary" />} label=">15 yards" />             
+                            </RadioGroup>
+                        </FormControl>
+                          <h4 className="data-point-heading-h4">Shot Type</h4>
+                          <FormControl component="fieldset" className={classes.formControl}>
+                           
+                              <RadioGroup
+                                aria-label="Shot Type"
+                                name="shotType"
+                                className={classes.group}
+                                value={this.state.value}
+                                onChange={this.handleRadioChange}
+                              >
+                                <FormControlLabel value="overhand" control={<Radio onClick={this.clickRadio} className={classes.radio} color="primary" />} label="Overhand" />
+                                <FormControlLabel value="sidearm" control={<Radio onClick={this.clickRadio} className={classes.radio}  color="primary" />} label="Sidearm" />  
+                                <FormControlLabel value="underhand" control={<Radio onClick={this.clickRadio} className={classes.radio}  color="primary" />} label="Underhand" />     
+                            </RadioGroup>
+                        </FormControl>
                     </div>
+                      <div className="data-point-item optional-item">
+                        <h4 className="data-point-heading-h4">Shot Distance</h4>
+                        <FormControl component="fieldset" className={classes.formControl}>
+                           
+                              <RadioGroup
+                                aria-label="Bounce Shot"
+                                name="bounceShot"
+                                className={classes.group}
+                                value={this.state.value}
+                                onChange={this.handleRadioChange}
+                              >
+                                <FormControlLabel value="Yes" control={<Radio onClick={this.clickRadio} className={classes.radio} color="primary" />} label="Yes" />
+                                <FormControlLabel value="No" control={<Radio onClick={this.clickRadio} className={classes.radio}  color="primary" />} label="No" />           
+                            </RadioGroup>
+                        </FormControl>
+                        
+                         <h4 className="data-point-heading-h4">Shooter Hand</h4>
+                          <FormControl component="fieldset" className={classes.formControl}>
+                           
+                              <RadioGroup
+                                aria-label="Shooter Hand"
+                                name="shooterHand"
+                                className={classes.group}
+                                value={this.props.filter.shotDistance}
+                                onChange={this.handleRadioChange}
+                              >
+                                <FormControlLabel value="left" control={<Radio onClick={this.clickRadio} className={classes.radio}  color="primary" />} label="Left" />  
+                                <FormControlLabel value="right" control={<Radio onClick={this.clickRadio} className={classes.radio} color="primary" />} label="Right" />
+                                   
+                            </RadioGroup>
+                        </FormControl>  
+                          
+                          <h4 className="data-point-heading-h4">Game Situation</h4>
+                          <FormControl component="fieldset" className={classes.formControl}>
+                           
+                              <RadioGroup
+                                aria-label="Shooter Hand"
+                                name="shooterHand"
+                                className={classes.group}
+                                value={this.state.value}
+                                onChange={this.handleRadioChange}
+                              >
+                                <FormControlLabel value="even" control={<Radio onClick={this.clickRadio} className={classes.radio} color="primary" />} label="Even" />
+                                <FormControlLabel value="mandown" control={<Radio onClick={this.clickRadio} className={classes.radio}  color="primary" />} label="Man Down" />   
+                                <FormControlLabel value="fastbreak" control={<Radio onClick={this.clickRadio} className={classes.radio}  color="primary" />} label="Fast Break" />     
+                            </RadioGroup>
+                        </FormControl>    
+                         
+                    </div>            
+                </div>    
+                        </Collapse>
+                    </List>
                     
-                        {this.state.optional &&
+                    
+                    
+                     
+                    
+                 {/*
                         
                         <div className="optional-data-container">
                             <div className="shot-item-container">
@@ -155,10 +281,14 @@ export default class DrawerSimpleExample extends React.Component {
                             </div>
                             
                         </div>
-                        }
-                  
+                        
+                        
+                        } */}
+               
                 </Drawer>
             </div>
         )
     }
 }
+
+export default withRouter(withStyles(styles)(LeftDrawer));

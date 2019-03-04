@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { withRouter } from 'react-router-dom';
 import NavBar from './NavBar';
-import FontIcon from 'material-ui/FontIcon';
+import AddCircle from '@material-ui/icons/AddCircle';
 import { Link } from 'react-router-dom';
-import Paper from 'material-ui/Paper'; 
 // import Heatmap from './Heatmap';
 import Shot from './Shot';
 
 
-const style = {
+const styles = theme => ({
+  root: {
     button: {
         margin: 5
     },
@@ -37,9 +39,10 @@ const style = {
         marginTop: -15,
         marginBottom: 0
     }
-}
+  }
+})
 
-export default class List extends React.PureComponent {
+class List extends Component {
 
     getUpdated = (ms) => {
         const date = new Date(ms)
@@ -55,7 +58,7 @@ export default class List extends React.PureComponent {
             return null
         }
         return Object.keys(shots).map((item, key) => (
-            < Shot key={item} index={item} details={shots[item]} removeShot={this.props.removeShot} paperWidth={style.paper.width} paperHeight={style.paper.height} active={false}/>
+            < Shot key={item} index={item} details={shots[item]} removeShot={this.props.removeShot} paperWidth={styles.paper.width} paperHeight={styles.paper.height} active={false}/>
         ))
     }
 
@@ -77,7 +80,7 @@ export default class List extends React.PureComponent {
             return (
                 <div className="heatmapitem" key={item.name + i} style={activeStyle}>
                     <Link to='/' onClick={() => this.props.changeActiveData(i) }>
-                        <Paper style={style.paper}>
+                        <div style={styles.paper}>
                             <div className="goal-container">
                                 {item.goalie ?
                                     <img alt="Goalie Rightie" src={require('../images/GoalieRight.png')} className="goalie-rightie" /> :
@@ -88,7 +91,7 @@ export default class List extends React.PureComponent {
                                 {this.getShots(item.shots)}
 
                             </div>
-                        </Paper>
+                        </div>
                     </Link>
                     <h2 className="heatmaph2">{item.name}</h2>
                     <div className="updatedtext">Last Updated: {this.getUpdated(item.updated)} </div>
@@ -113,7 +116,7 @@ export default class List extends React.PureComponent {
                     <div className="heatmapitem">
                         <Link to='/' onClick={this.props.addNewMap}>
                             <div className="addnewdiv">
-                                <FontIcon className='material-icons'>add_circle</FontIcon>
+                                <AddCircle />
                             </div>
                         </Link>
                         <h2 className="heatmaph2">Add New Heat Map</h2>
@@ -124,3 +127,5 @@ export default class List extends React.PureComponent {
         )
   }
 }
+
+export default withRouter(withStyles(styles)(List));

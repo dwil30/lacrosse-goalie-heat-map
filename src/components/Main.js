@@ -1,9 +1,15 @@
-import React  from 'react';
+import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { withRouter } from 'react-router-dom';
+
 import NavBar from './NavBar';
 import LeftDrawer from './LeftDrawer';
 import Goal from './Goal';
 
-export default class Main extends React.PureComponent {
+const styles = theme => ({
+})
+
+class Main extends Component {
     
     // componentWillMount() {
     //     // check if there is any order in localStorage
@@ -28,22 +34,24 @@ export default class Main extends React.PureComponent {
     //     //localStorage.setItem('heatMap', JSON.stringify(nextState.heatMap));
     // }
     
-    constructor(props) {
-        super(props);
-        this.handleToggle = this.handleToggle.bind(this);
-        this.handleCreateMap = this.handleCreateMap.bind(this);
-        this.handleFirstSlider = this.handleFirstSlider.bind(this);
-        this.closeHeatmap = this.closeHeatmap.bind(this);
-    
-        this.state = {
-            slider:0.9,
-            heatMap: false,
-            drawer: true,
-            shotResult: true, //true = Save, false = Goal
-            editMode:false,
-            filter: {}
-        }
-    }
+  state = {
+      slider:0.9,
+      heatMap: false,
+      drawer: true,
+      shotResult: true, //true = Save, false = Goal
+      editMode:false,
+      filter: {}, 
+      goalie:true, 
+      
+  }
+
+    handleChange = name => event => {
+        this.setState({ [name]: event.target.checked });
+    };
+
+    handleRadioChange = event => {
+        this.setState({ value: event.target.value });
+    };
 
     handleToggle(){
         this.setState({drawer: !this.state.drawer});
@@ -111,6 +119,7 @@ export default class Main extends React.PureComponent {
                     shotResult={this.state.shotResult}
                     clickOnFilterRadio={this.clickOnFilterRadio}
                     filter={this.state.filter}
+                    handleChange={this.handleChange}
                 />
                 <Goal
                     // STATE:
@@ -140,3 +149,5 @@ export default class Main extends React.PureComponent {
         )
     }
 }
+
+export default withRouter(withStyles(styles)(Main));

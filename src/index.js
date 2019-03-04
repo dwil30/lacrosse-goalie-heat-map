@@ -1,14 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-
-import './css/normalize.css';
-import './css/webflow.css';
-import './css/lgr-react.webflow.css';
-import './css/App.css';
+import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
-injectTapEventPlugin();
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: http://bit.ly/CRA-PWA
+serviceWorker.unregister();

@@ -1,7 +1,6 @@
 import Rebase from 're-base';
 import firebase from 'firebase';
 
-
 const config = {
     apiKey: "AIzaSyAeFREEwxlzE0haKb9rOt91BQia3Ceyjrk",
     authDomain: "lax-goalie-rat.firebaseapp.com",

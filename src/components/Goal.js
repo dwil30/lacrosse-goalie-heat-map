@@ -1,17 +1,18 @@
-import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
+import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { withRouter, Link } from 'react-router-dom';
+
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Snackbar from '@material-ui/core/Snackbar';
+import Slider from '@material-ui/lab/Slider';
+
+
 import Shot from './Shot';
-// import Login from './Login';
 import Modal from './Modal';
 import Heatmap from './Heatmap';
-import Slider from 'material-ui/Slider';
-import {Link} from 'react-router-dom';
-import FlatButton from 'material-ui/FlatButton'
 
-
-const style = {
+const styles = theme => ({
     button:{
         margin: 5
     },
@@ -42,19 +43,15 @@ const style = {
         marginTop:-15,
         marginBottom:0
     }
-}
+})
 
-export default class Goal extends React.Component {
+class Goal extends Component {
 
-    constructor() {
-        super();
-        this.state = {
-            modalOpen: false,
-            modalAction: '',
-            mapName: undefined,
-        }
+    state = {
+        modalOpen: false,
+        modalAction: '',
+        mapName: undefined,
     }
-
 
     changeGridNumber = (e) => {
         this.props.heatMapBoxNumber(e);
@@ -71,8 +68,8 @@ export default class Goal extends React.Component {
                 index={item} 
                 details={shots[item]} 
                 removeShot={this.props.removeShot} 
-                paperWidth={style.paper.width} 
-                paperHeight={style.paper.height}
+                paperWidth={styles.paper.width} 
+                paperHeight={styles.paper.height}
             /> 
         ))
     }
@@ -126,7 +123,7 @@ export default class Goal extends React.Component {
                     value={name}
                 />
                 <br />
-                {buttonVizible ? <RaisedButton label="Save Heat Map" className="options-button w-button" onClick={this.saveMapName} /> : null}
+                {buttonVizible ? <Button className="options-button w-button" onClick={this.saveMapName}>Save Heat Map</Button> : null}
             </div>
         )
     }
@@ -179,6 +176,7 @@ export default class Goal extends React.Component {
 
     render() {
         const appState = this.props.appState;
+        const { classes } = this.props;
         const activeData = appState.activeData;
         let shots = []
 
@@ -190,8 +188,8 @@ export default class Goal extends React.Component {
 
 
         return (
-            <div className="main-body" style={this.props.drawer ? style.main : style.mainNoPadding}>
-                <Paper onClick={this.props.addShot} style={style.paper}>
+            <div className="main-body" style={this.props.drawer ? styles.main : styles.mainNoPadding}>
+                <div onClick={this.props.addShot} style={styles.paper}>
                     
                     {this.props.heatMap &&
                     <Heatmap
@@ -199,8 +197,8 @@ export default class Goal extends React.Component {
                         slider={this.props.slider}
                         heatMap={this.props.heatMap}
                         heatMapLength={appState.data[appState.activeData].heatmapGrid}
-                        paperWidth={style.paper.width}
-                        paperHeight={style.paper.height}
+                        paperWidth={styles.paper.width}
+                        paperHeight={styles.paper.height}
                     />}
                     
                     <div className="goal-container">
@@ -210,14 +208,13 @@ export default class Goal extends React.Component {
                         <img alt="GoalImage" src={require('../images/LacrosseGoalFinal.jpg')} className="goal-image" id="goal" />
                         
                         {this.getShots(filteredShots)}
-                        
                     </div>
-                </Paper>
+                </div>
                 <div className="right-container">
                 {this.props.heatMap ?
                  <div> 
                     {!this.props.appState.authenticated ?
-                        <Link to='/login'><FlatButton label='login to save your heatmap'/></Link> :
+                    <Link to='/login'><Button>Login to save</Button></Link> :
                         this.getSaveNameField()
                     }        
                     <div className="legend-container">
@@ -234,7 +231,7 @@ export default class Goal extends React.Component {
                     
                     <div className="slider-container">
                         <div className="legend-text">Heat Map Opacity: {this.props.slider}</div>
-                        <Slider className='slider' style={style.slider} value={this.props.slider} onChange={this.props.handleFirstSlider} />
+                        <Slider className='slider' style={styles.slider} value={this.props.slider} onChange={this.props.handleFirstSlider} />
                     </div>
                             
                     
@@ -265,16 +262,17 @@ export default class Goal extends React.Component {
                             </div>
                     </div>  */}
                     <div className="legend-container">
-                        <RaisedButton backgroundColor={'#ff00004d'} onClick={() => this.madeModalState('OPEN', 'DELETE_HEATMAP')} label="Delete Heat Map" className="options-button w-button" style={{position:'absolute',bottom:0,right:20}} />
-                        <RaisedButton onClick={this.props.closeHeatmap} label="Edit Heatmap" className="options-button w-button" style={{margin:'auto'}} />
+                        <Button onClick={() => this.madeModalState('OPEN', 'DELETE_HEATMAP')} color="secondary">Delete Heat Map</Button>
+                        
+                        <Button onClick={this.props.closeHeatmap} className="options-button w-button" style={{margin:'auto'}}>Edit Heatmap</Button>
                     </div>        
                 </div> : <div>
                         
-                    <RaisedButton onClick={this.props.handleCreateMap} label="Show Heat Map" primary={true}  className="options-button w-button" /><br/>
+                        <Button onClick={this.props.handleCreateMap} className="options-button w-button">Show Heat Map</Button><br/>
                         
                     {/* <RaisedButton onClick={this.props.handleCreateMap} label="Remove All Shots" className="options-button w-button" /> <br/> */}
                 
-                    <RaisedButton onClick={this.props.loadSampleShots} label="Load Samples" className="options-button w-button" />    
+                        <Button onClick={this.props.loadSampleShots} className="options-button w-button">Load Samples</Button>    
                     
                 </div>
                 }
@@ -291,3 +289,5 @@ export default class Goal extends React.Component {
         )
     }
 }
+
+export default withRouter(withStyles(styles)(Goal));

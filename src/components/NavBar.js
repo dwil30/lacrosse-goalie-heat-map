@@ -1,28 +1,171 @@
-import React from 'react';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
-import Divider from 'material-ui/Divider';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import {Link} from 'react-router-dom'
+import React,  { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { Link, withRouter } from 'react-router-dom';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import SettingsIcon from '@material-ui/icons/Settings';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
-const styles = {
-    appBar: {
-        backgroundColor:'#6b8797'
-    }, 
-    appBarOpen: {
-        backgroundColor:'#6b8797',
-        paddingLeft: 305
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+  appNavBar:{
+    borderBottom: '1px solid #000',
+    backgroundColor: '#535353',
+    zIndex: theme.zIndex.drawer + 1  
+  }, 
+  actionButtom: {
+    textTransform: 'uppercase',
+    margin: theme.spacing.unit,
+    fontWeight:'bold'  
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+    color:'#c2c2c2'
+  },
+  settingsButton:{
+    color:'#c2c2c2',
+    fontWeight:700
+  },
+ settings:{
+     textDecoration:'none', 
+     color:'black',
+ }
+})
+
+class NavBar extends Component {
+    
+state = {
+    value: 0,
+    menuDrawer: false, 
+    anchorEl: null,  
+  };
+
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
+
+  mobileMenuOpen = (event) => {
+    this.setState({ menuDrawer: true });
+  }
+
+  mobileMenuClose = (event) => {
+    this.setState({ menuDrawer: false });
+  }
+  
+  handleSettingsClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleSettingsClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
+  current = () => {
+    if(this.props.location.pathname === '/') {
+      return 0
     }
+    if(this.props.location.pathname === '/login') {
+      return 1
+    }
+    if(this.props.location.pathname === '/signup') {
+      return 2
+    }
+    if(this.props.location.pathname === '/dashboard') {
+      return 3
+    }
+    if(this.props.location.pathname === '/create') {
+      return 4
+    }
+    if(this.props.location.pathname === '/heatmap') {
+      return 5
+    }
+  }
+  
+  
+  render() {
+    const { classes } = this.props;
+    const { anchorEl } = this.state;
+    return (
+        <div className={classes.root}>
+            <AppBar position={this.current() > 4 ? "fixed" : "static"} color='inherit' className={this.current() >= 3 ? classes.appNavBar : ''}>
+                <Toolbar>
+                    {this.current() < 3 ?
+                    <Link to="/">
+                        <img alt="logo" className="logo" src={require('../images/SportMapLogo_1.png')} />
+                    </Link> :
+                    <img src={require('../images/SportMapWhite.png')} alt="Logo" class="appimage" />
+                    }
+                
+                    <Typography variant="h6" color="inherit" className={classes.grow}>
+                        
+                    </Typography>
+                    {this.current() === 0 && !this.props.authenticated ?
+                  
+                       
+                   
+                    <React.Fragment>              
+                    <Button component={Link} to="/login" color='primary' variant="outlined" className={classes.actionButtom}>Login</Button>
+                    
+                    <Button component={Link} to="/signup" color='primary' variant="contained" className={classes.actionButtom}>Get Started</Button>
+                    </React.Fragment>            
+                    :
+                    <Button component={Link} to="/dashboard" color='primary' variant="contained" className={classes.actionButtom}>Dashboard</Button>      
+                    }
+                    
+                    {this.current() === 1 &&
+                    <Button variant="outlined" className="cta-button login w-button">Don&#x27;t have an account?</Button>
+                    }
+                    
+                    {this.current() >= 3 &&
+                    <React.Fragment>
+                        <Button
+                        aria-owns={anchorEl ? 'simple-menu' : undefined}
+                        aria-haspopup="true"
+                        onClick={this.handleSettingsClick}
+                        className={classes.settingsButton}    
+                        >
+                            <SettingsIcon className={classes.leftIcon} />
+                            Settings
+                        </Button>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={this.handleSettingsClose}
+                    >
+                      <MenuItem><Link className={classes.settings} to="/profile" onClick={this.handleSettingsClose}>Profile</Link></MenuItem>
+                      <MenuItem><Link className={classes.settings} to="/dashboard" onClick={this.handleSettingsClose}>Dashboard</Link></MenuItem>
+                      <MenuItem><Link className={classes.settings} to="/logout" onClick={this.handleSettingsClose}>Logout</Link></MenuItem>
+                    </Menu>
+                        </React.Fragment> 
+                    }
+                    
+                </Toolbar>
+            </AppBar>
+        </div>
+    )
+  }
 }
 
-class NavBar extends React.PureComponent {
 
-    render() {
-        return (
+            
+            /*
             <div>
                 <AppBar
                 title="Lacrosse Goalie Heat Map"
@@ -43,9 +186,5 @@ class NavBar extends React.PureComponent {
                     <Link to="/login"><FlatButton style={{marginTop:'4px'}} labelStyle={{color:'white'}} label="Login" /></Link>
         }
         />
-      </div>
-    )
-  }
-}
-
-export default NavBar;
+      </div> */
+export default withRouter(withStyles(styles)(NavBar))

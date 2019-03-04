@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { withRouter } from 'react-router-dom';
 
-export default class Heatmap extends React.Component {
+const styles = theme => ({
+    })
+
+class Heatmap extends Component {
 
     getBoxes = () => {
 
@@ -101,3 +106,4 @@ export default class Heatmap extends React.Component {
     }
 }
 
+export default withRouter(withStyles(styles)(Heatmap));

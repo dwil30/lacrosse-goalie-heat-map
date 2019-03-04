@@ -1,42 +1,62 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Main from './components/Main';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { app, base} from './base';
+
+//Components
+import Main from './components/Main';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import List from './components/List';
+import Home from './components/Home';
 import sampleData from './sample-shots';
+import ScrollToTop from './components/ScrollTop'
+import Signup from './components/Signup'
 
-const muiTheme = getMuiTheme({
-    fontFamily: 'roboto',
-    palette: {
-        primary1Color:'#093978'
+//CSS
+import './css/webflow.css';
+import './css/stylesheet.css';
+import './css/sportmap.webflow.css';
+import './css/App.css';
+
+
+const theme = createMuiTheme({
+  palette: {
+    secondary: {
+      main: "#c40001"
+    },
+    primary: {
+      main: "#02243d"
     }
-})
+  },
+  typography: {
+    useNextVariants: true,
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      'Circular',
+      'sans-serif'
+    ].join(',')
+  }
+});
 
 class App extends React.Component {
     
-    constructor() {
-        super();
-        this.state = {
-            authenticated: false,
-            currentUser: null,
-            uid: 'default',
-            data: [
-                {
-                    id: 'sdgdsfg',
-                    name: 'Demo map',
-                    shots: {},
-                    filter: {},
-                    updated: '0',
-                    goalie: true,
-                    heatmapGrid: 3,
-                },
-            ],
-            activeData: 0,
-        }
+    state = {
+        authenticated: false,
+        currentUser: null,
+        uid: 'default',
+        data: [
+            {
+                id: 'sdgdsfg',
+                name: 'Demo map',
+                shots: {},
+                filter: {},
+                updated: '0',
+                goalie: true,
+                heatmapGrid: 3,
+            },
+        ],
+        activeData: 0,
     }
 
 
@@ -289,11 +309,16 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className="body">
-                <MuiThemeProvider className="body" muiTheme={muiTheme}>
-                    <BrowserRouter className="body">
-                        <div className="body">
-                            <Route exact path="/" render={ (props) => <Main
+         <div>
+            <MuiThemeProvider theme={theme}>
+                <BrowserRouter>
+                    <ScrollToTop>
+                        <Switch>
+                            <Route exact path="/" render={ (props) => <Home
+                                appState={this.state}
+                                {...props}
+                            />}/>
+                            <Route exact path="/main" render={ (props) => <Main
                                 appState={this.state}
                                 addShot={this.addShot}
                                 loadSampleShots={this.loadSampleShots}
@@ -315,20 +340,14 @@ class App extends React.Component {
                             />} />
                             <Route exact path="/login" component={props => <Login authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                             <Route exact path="/logout" component={props => <Logout authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
-                        </div>
-                    </BrowserRouter>
-                </MuiThemeProvider>
-            
-                {/*** FONTS ***/}
-                <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet"/>
-                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-                {/*** ENDFONTS ***/}
-            
-            </div>
+                            <Route exact path="/signup" component={props => <Signup authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
+                        </Switch>
+                    </ScrollToTop>
+                </BrowserRouter>
+            </MuiThemeProvider>  
+        </div>
         )
     }
 }
 
 export default App;
-
-

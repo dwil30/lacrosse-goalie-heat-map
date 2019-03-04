@@ -93,9 +93,6 @@
     width:25%; 
     padding:15px;
 }
-.login-wrapper{
-    height:500px
-}
 .addnewdiv{
     cursor:pointer;
 }
@@ -122,4 +119,62 @@ a {
 }
 .logopic {
     width:88%;
+}
+
+@media screen and (min-width: 1200px) {
+    .w-container {
+        max-width: 1170px;
+    }
+}
+
+.heat-map-preview-container, .hoverpreview {
+    -webkit-transition: all 200ms ease;
+    transition: all 200ms ease;
+}
+.heat-map-preview-container:hover > .hoverpreview {
+    display:flex;
+}
+.arroweffect{
+  animation: arrow 1.5s infinite;
+}
+@keyframes arrow {
+  from {opacity:1;transform:translateX(0px)}
+  to {opacity:0;transform:translateX(20px)}
+}
+.finalsection{
+     -webkit-box-shadow: 0 8px 6px -6px black;
+       -moz-box-shadow: 0 8px 6px -6px black;
+            box-shadow: 0 13px 13px -13px black!important;
+}
+
+.optional-item {
+        justify-content: left!important;
+    padding-left:20px!important;
+}
+
+.optional-item h4 {
+    text-align:left;
+    text-decoration:underline;
+    margin-top:6px;
+}
+
+.leftie-goalie {
+    display:block!important;
+}
+
+.facebook-login-image{
+    width:280px;
+}
+.save-text{
+    color:#f22126;
+}
+.goal-text{
+    color:#77cb4a;
+}
+p {
+    font-weight: 400;
+}
+.login-wrapper.signup{
+  background-image: -webkit-gradient(linear, left top, left bottom, from(hsla(0, 0%, 73%, .9)), to(hsla(0, 0%, 73%, .9))), url('../images/LacrosseGoalieBackground.jpg');
+  background-image: linear-gradient(180deg, hsla(0, 0%, 73%, .9), hsla(0, 0%, 73%, .9)), url('../images/LacrosseGoalieBackground.jpg'); 
 }
