@@ -7,7 +7,7 @@ import { app, base} from './base';
 import Main from './components/Main';
 import Login from './components/Login';
 import Logout from './components/Logout';
-import List from './components/List';
+//import List from './components/List';
 import Home from './components/Home';
 import sampleData from './sample-shots';
 import ScrollToTop from './components/ScrollTop'

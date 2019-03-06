@@ -1,7 +1,6 @@
 import React,  { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
