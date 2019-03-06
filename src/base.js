@@ -6,9 +6,9 @@ const config = {
     authDomain: "lax-goalie-rat.firebaseapp.com",
     databaseURL: "https://lax-goalie-rat.firebaseio.com",
     projectId: "lax-goalie-rat",
-    storageBucket: "",
+    storageBucket: "lax-goalie-rat.appspot.com",
     messagingSenderId: "149428715395"
-};
+  };
 
 const app = firebase.initializeApp(config)
 const base = Rebase.createClass(app.database())

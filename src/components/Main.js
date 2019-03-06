@@ -7,6 +7,9 @@ import LeftDrawer from './LeftDrawer';
 import Goal from './Goal';
 
 const styles = theme => ({
+    root: {
+        display: 'flex',
+    },
 })
 
 class Main extends Component {
@@ -39,14 +42,15 @@ class Main extends Component {
       heatMap: false,
       drawer: true,
       shotResult: true, //true = Save, false = Goal
-      editMode:false,
+      editMode: false,
       filter: {}, 
-      goalie:true, 
+      goalie: true, 
       
   }
 
     handleChange = name => event => {
         this.setState({ [name]: event.target.checked });
+        console.log(this.state.goalie)
     };
 
     handleRadioChange = event => {
@@ -64,9 +68,9 @@ class Main extends Component {
     handleCreateMap(){
         this.setState({heatMap: true});  
     }
-    
-    handleFirstSlider(event, value){
-        this.setState({slider: value})
+
+    handleSlider = (event, value) => {
+        this.setState({ slider: value });
     }
     
     closeHeatmap(){
@@ -102,9 +106,10 @@ class Main extends Component {
     }
 
     render() {
+        const { classes } = this.props;
         // console.log(this.state.heatMap);
         return (
-            <div className='body'>
+              <div className={classes.root}>
                 <NavBar 
                     authenticated={this.props.appState.authenticated}
                     handleToggle={this.handleToggle}
@@ -115,6 +120,7 @@ class Main extends Component {
                     switchShotResult={this.switchShotResult}
                     switchGoalie={this.props.switchGoalie}
                     drawer={this.state.drawer}
+                    goalie={this.state.goalie}
                     goalieResult={this.props.appState.data[this.props.appState.activeData].goalie}
                     shotResult={this.state.shotResult}
                     clickOnFilterRadio={this.clickOnFilterRadio}
@@ -133,11 +139,10 @@ class Main extends Component {
                     saveName={this.props.saveName}
                     changeHeatmapGrid={this.props.changeHeatmapGrid}
                     deleteActiveMap={this.props.deleteActiveMap}
-                    // OLD
-                    drawer={this.state.drawer}
+                    goalie={this.state.goalie}
                     // goalieResult={this.props.appState.data[this.props.appState.activeData].goalie}
                     handleCreateMap={this.handleCreateMap}
-                    handleFirstSlider={this.handleFirstSlider}
+                    handleSlider={this.handleSlider}
                     heatMap={this.state.heatMap}
                     slider={this.state.slider}
                     // inputRef={input => this.inputElement = input}

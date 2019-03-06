@@ -70,12 +70,14 @@ signinButton:{
     }
 });
 
+
                         
 
 class LeftDrawer extends Component {
     
     state = {
         optional: false,
+        open: false,
     }
     
     clickRadio = (e) => {
@@ -90,6 +92,10 @@ class LeftDrawer extends Component {
             optional:!this.state.optional
         })
     }
+    
+    handleClick = () => {
+        this.setState(state => ({ open: !state.open }));
+    };
     
 
     render() {

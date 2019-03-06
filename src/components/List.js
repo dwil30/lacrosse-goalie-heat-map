@@ -54,15 +54,24 @@ class List extends Component {
     }
 
     getShots = (shots) => {
+        const { classes } = this.props;
         if (!shots || shots.length === 0) {
             return null
         }
         return Object.keys(shots).map((item, key) => (
-            < Shot key={item} index={item} details={shots[item]} removeShot={this.props.removeShot} paperWidth={styles.paper.width} paperHeight={styles.paper.height} active={false}/>
+            < Shot 
+                key={item} 
+                index={item} 
+                details={shots[item]} 
+                removeShot={this.props.removeShot} 
+                paperWidth={220} 
+                paperHeight={240} 
+                active={false}/>
         ))
     }
 
     getLinksOnHeatmaps = (appState) => {
+        const { classes } = this.props;
         const data = appState.data;
         if (!data) {
             return <div>Map not found</div>
@@ -80,7 +89,7 @@ class List extends Component {
             return (
                 <div className="heatmapitem" key={item.name + i} style={activeStyle}>
                     <Link to='/' onClick={() => this.props.changeActiveData(i) }>
-                        <div style={styles.paper}>
+                        <div style={classes.paper}>
                             <div className="goal-container">
                                 {item.goalie ?
                                     <img alt="Goalie Rightie" src={require('../images/GoalieRight.png')} className="goalie-rightie" /> :
@@ -103,6 +112,7 @@ class List extends Component {
 
     render() {
         const appState = this.props.appState;
+        const { classes } = this.props;
 
         return (
             <div> 

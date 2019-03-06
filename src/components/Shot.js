@@ -1,9 +1,25 @@
-import React from 'react';
-import IconButton from '@material-ui/core/IconButton';
+import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { withRouter } from 'react-router-dom';
 import Dot from '@material-ui/icons/FiberManualRecord';
 
-export default class Shot extends React.Component {
 
+const styles = theme => ({
+    saveDot:{
+        color: '#e82121',
+        '&:hover': {
+        color: '#b21c1c',
+        }
+    },
+    goalDot:{
+        color: '#70c60b',
+        '&:hover': {
+        color: '#54910b',
+        }
+    }
+})
+
+class Shot extends Component {
 
     removeShot = (e, index) => {
         e.stopPropagation();
@@ -13,6 +29,7 @@ export default class Shot extends React.Component {
     }
 
     render() {
+        const { classes } = this.props;
         const { details, index } = this.props;
         const isGoal = details.shotResult;
         const paperWidth = this.props.paperWidth;
@@ -37,30 +54,29 @@ export default class Shot extends React.Component {
 
             <div>
                 {isGoal ? (
-                    
-                     <IconButton aria-label="Save" style={styles.button}>
+                    //Goal Dot - Green
                         <Dot 
-                            id={index} 
-                            color={'#70c60b'}
-                            hoverColor={'#5da20d'}
                             onClick={ (e) => this.removeShot(e, index)} 
-                            />
-                    </IconButton>
+                            className={classes.goalDot}
+                            id={index} 
+                            style={styles.button}
+                        />
+               
                     )
                     
                     : (  
-                    
-                     <IconButton aria-label="Goale" style={styles.button}>
+                    //Save Dot - Red
                         <Dot 
-                            id={index} 
-                            color={'#e82121'} 
-                            hoverColor={'#c11414'} 
                             onClick={ (e) => this.removeShot(e, index)} 
-                            />
-                    </IconButton>
+                            className={classes.saveDot}
+                            id={index} 
+                            style={styles.button}
+                        />
                     )
                 }
             </div>
         )
   }
 }
+
+export default withRouter(withStyles(styles)(Shot));

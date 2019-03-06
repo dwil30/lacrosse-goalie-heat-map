@@ -1,17 +1,21 @@
-import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import { Redirect } from 'react-router-dom';
+import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { withRouter, Redirect } from 'react-router-dom';
 
-//import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default class Modal extends React.Component {
+const styles = theme => ({
+})
 
-    constructor() {
-        super();
-        this.state = {
-            redirect: false
-        }
+class Modal extends Component {
+    
+    state = {
+        redirect: false
     }
 
     deleteHeatMap = () => {
@@ -26,35 +30,33 @@ export default class Modal extends React.Component {
             return <Redirect to="/dashboard" />
         }
 
-        let actions, message;
-
-        if (this.props.modalAction === 'DELETE_HEATMAP') {
-            actions = [
-                <FlatButton
-                    label="Cancel"
-                    primary={true}
-                    onClick={this.props.madeModalClose}
-                />,
-                <FlatButton
-                    label="Delete Heat Map"
-                    onClick={this.deleteHeatMap}
-                />,
-            ];
-
-            message = 'Deleting a heat map cannot be undone.'
-        }
+        //let actions, message;
 
         return (
         <div>
             <Dialog
-            title="Are you sure?"
-            actions={actions}
-            modal={true}
-            open={this.props.modalOpen}
+              open={this.props.modalOpen}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
             >
-            {message}  
-            </Dialog>
+          <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+             Deleting a heat map cannot be undone!
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.props.madeModalClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.deleteHeatMap} color="primary" autoFocus>
+              Delete!
+            </Button>
+          </DialogActions>
+        </Dialog>
         </div>
         );
     }
 }
+
+export default withRouter(withStyles(styles)(Modal));

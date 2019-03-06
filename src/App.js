@@ -12,6 +12,9 @@ import Home from './components/Home';
 import sampleData from './sample-shots';
 import ScrollToTop from './components/ScrollTop'
 import Signup from './components/Signup'
+import Dashboard from './components/Dashboard'
+import Profile from './components/Profile'
+import Create from './components/Create'
 
 //CSS
 import './css/webflow.css';
@@ -57,6 +60,7 @@ class App extends React.Component {
             },
         ],
         activeData: 0,
+        goalie:true
     }
 
 
@@ -331,6 +335,8 @@ class App extends React.Component {
                                 deleteActiveMap={this.deleteActiveMap}
                                 {...props}
                             />}/>
+                            <Route exact path="/dashboard" component={props => <Dashboard authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
+                            {/*
                             <Route exact path='/dashboard' component={ (props) => <List 
                                 appState={this.state}
                                 authenticated={this.state.authenticated}
@@ -338,9 +344,12 @@ class App extends React.Component {
                                 addNewMap={this.addNewMap}
                                 {...props}
                             />} />
+                            */}
                             <Route exact path="/login" component={props => <Login authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                             <Route exact path="/logout" component={props => <Logout authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                             <Route exact path="/signup" component={props => <Signup authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
+                            <Route exact path="/profile" component={props => <Profile authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
+                            <Route exact path="/create" component={props => <Create authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                         </Switch>
                     </ScrollToTop>
                 </BrowserRouter>

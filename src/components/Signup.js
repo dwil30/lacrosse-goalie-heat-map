@@ -78,9 +78,11 @@ class Signup extends Component {
                         
                         <Button color='primary' variant="contained" className={classes.signinButton}>Sign Up</Button>
                         
+                        {/*
                         <img src={require("../images/Screenshot-2017-09-20-19.36.45.png")} alt="Line Separator" className="orimage"/>
                         
                         <img src={require("../images/SignUpWithFacebook.png")} alt="Facebook Login" className="facebook-login-image"/>
+                        */}
                         
                     </form>
                 </div>

@@ -103,7 +103,7 @@ handleChange = name => event => {
     
   render() {
     const { classes } = this.props;
-    const { from } = this.props.location.state || { from: { pathname: '/' } }
+    //const { from } = this.props.location.state || { from: { pathname: '/' } }
 
     if (this.state.redirect === true) {
       return <Redirect to='/dashboard' />
@@ -162,10 +162,11 @@ handleChange = name => event => {
                         <div className={classes.resetLink} onClick={this.passwordReset}>Forgot Password?</div> :
                         <div className={classes.resetLink} onClick={this.passwordReset}>Return to Login</div>
                         }
-                        
+                        {/*
                         <img src={require("../images/Screenshot-2017-09-20-19.36.45.png")} alt="Line Separator" className="orimage"/>
                         
                         <img src={require("../images/SignUpWithFacebook.png")} alt="Facebook Login" className="facebook-login-image"/>
+                        */}
                    
                     </form>
                 </div>

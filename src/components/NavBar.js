@@ -80,21 +80,22 @@ state = {
     if(this.props.location.pathname === '/') {
       return 0
     }
-    if(this.props.location.pathname === '/login') {
+    else if(this.props.location.pathname === '/login') {
       return 1
     }
-    if(this.props.location.pathname === '/signup') {
+    else if(this.props.location.pathname === '/signup') {
       return 2
     }
-    if(this.props.location.pathname === '/dashboard') {
+    else if(this.props.location.pathname === '/dashboard') {
       return 3
     }
-    if(this.props.location.pathname === '/create') {
+    else if(this.props.location.pathname === '/create') {
       return 4
     }
-    if(this.props.location.pathname === '/heatmap') {
+    else if(this.props.location.pathname === '/heatmap') {
       return 5
     }
+    else return 6
   }
   
   
@@ -109,23 +110,19 @@ state = {
                     <Link to="/">
                         <img alt="logo" className="logo" src={require('../images/SportMapLogo_1.png')} />
                     </Link> :
-                    <img src={require('../images/SportMapWhite.png')} alt="Logo" class="appimage" />
+                    <img src={require('../images/SportMapWhite.png')} alt="Logo" className="appimage" />
                     }
                 
                     <Typography variant="h6" color="inherit" className={classes.grow}>
                         
                     </Typography>
-                    {this.current() === 0 && !this.props.authenticated ?
+                    {this.current() === 0 &&
                   
-                       
-                   
                     <React.Fragment>              
                     <Button component={Link} to="/login" color='primary' variant="outlined" className={classes.actionButtom}>Login</Button>
                     
                     <Button component={Link} to="/signup" color='primary' variant="contained" className={classes.actionButtom}>Get Started</Button>
-                    </React.Fragment>            
-                    :
-                    <Button component={Link} to="/dashboard" color='primary' variant="contained" className={classes.actionButtom}>Dashboard</Button>      
+                    </React.Fragment>             
                     }
                     
                     {this.current() === 1 &&

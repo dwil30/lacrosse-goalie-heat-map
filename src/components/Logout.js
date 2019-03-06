@@ -3,12 +3,9 @@ import { Redirect } from 'react-router-dom'
 import { app } from '../base'
 
 class Logout extends Component {
-  constructor() {
-    super()
-    this.state = {
+state = {
       redirect: false
     }
-  }
 
   componentWillMount() {
     app.auth().signOut().then((user) => {
