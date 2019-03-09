@@ -15,26 +15,26 @@ const styles = theme => ({
     loginButton:{
         marginTop:'20px',
         float:'right'
-    }, 
+    },
     signinButton:{
         marginTop:'20px',
         width:'90%',
         fontSize:'18px'
-    }, 
+    },
     resetLink:{
         marginTop:'20px',
         cursor:'pointer'
-    }, 
+    },
 });
 
 class Login extends Component {
-    
-  state = {  
+
+  state = {
     email: '',
     password:'',
-    messageOpen: false, 
+    messageOpen: false,
     errorMessage: '',
-    resetPassword: false, 
+    resetPassword: false,
     redirect: false
   }
 
@@ -56,13 +56,12 @@ handleChange = name => event => {
  passwordReset = () => {
     this.setState({ resetPassword: !this.state.resetPassword });
   };
-    
- authWithEmailPassword(event) {
+
+ authWithEmailPassword = (event) => {
     event.preventDefault()
-    
+
     const email = this.state.email
     const password = this.state.password
-
     app.auth().fetchProvidersForEmail(email)
       .then((providers) => {
         if (providers.length === 0) {
@@ -71,17 +70,16 @@ handleChange = name => event => {
         } else if (providers.indexOf("password") === -1) {
           // they used facebook
           //this.loginForm.reset()
-          this.setState({messageOpen:true, errorMessage: 'Email already in use with a social service.'}) 
+          this.setState({messageOpen:true, errorMessage: 'Email already in use with a social service.'})
         } else {
           // sign user in
-          return app.auth().signInWithEmailAndPassword(email, password)
-        }
-      })
-      .then((user) => {
-        if (user && user.email) {
-          //this.loginForm.reset()
-          this.props.setCurrentUser(user);
-          this.setState({redirect: true});
+          return app.auth().signInWithEmailAndPassword(email, password).then(({user}) => {
+            if (user && user.email) {
+              //this.loginForm.reset()
+              this.setState({redirect: true});
+              this.props.setCurrentUser(user);
+            }
+          })
         }
       })
       .catch((error) => {
@@ -100,31 +98,30 @@ handleChange = name => event => {
         }
       })
   }
-    
+
   render() {
     const { classes } = this.props;
     //const { from } = this.props.location.state || { from: { pathname: '/' } }
-
     if (this.state.redirect === true) {
       return <Redirect to='/dashboard' />
     }
-      
+
     return (
          <div className="login-wrapper">
             <div className="login-nav">
                 <div className="login-nav-container w-container">
                     <Link to="/">
                         <img src={require("../images/SportMapLogo_1.png")} alt="Logo" className="logo" />
-                    </Link>    
-                    
+                    </Link>
+
                     <Button component={Link} to="/signup" color='primary' variant="outlined" className={classes.loginButton}>Sign Up For New Account</Button>
                 </div>
                 <div className="modalcontainer reigstercontainer">
                     <h2 className="contacth2">{this.state.resetPassword ? "Reset Password" : "Log In"}</h2>
                     <h4 className="registerh4">{this.state.resetPassword ? "Enter your email address below to receive a password reset email." : "A world of heat maps awaits you inside"}</h4>
-                    
-                    <form onSubmit={event => this.authWithEmailPassword(event)}>
-                   
+
+                    <form onSubmit={this.authWithEmailPassword}>
+
                         <TextField
                           id="outlined-email-input"
                           label="Email"
@@ -134,12 +131,12 @@ handleChange = name => event => {
                           autoComplete="email"
                           margin="normal"
                           variant="outlined"
-                          onChange={this.handleChange('email')}  
+                          onChange={this.handleChange('email')}
                         />
-                 
-                        
+
+
                         {!this.state.resetPassword &&
-                   
+
                             <TextField
                               id="outlined-password-input"
                               label="Password"
@@ -148,30 +145,30 @@ handleChange = name => event => {
                               autoComplete="current-password"
                               margin="normal"
                               variant="outlined"
-                              onChange={this.handleChange('password')}  
+                              onChange={this.handleChange('password')}
                             />
-                             
+
                         }
 
-                        {!this.state.resetPassword ? 
+                        {!this.state.resetPassword ?
                         <Button type="submit" color='primary' variant="contained" className={classes.signinButton}>Log In</Button> :
                         <Button type="submit" color='primary' variant="contained" className={classes.signinButton}>Send Password Reset Email</Button>
                         }
-                             
+
                         {!this.state.resetPassword ?
                         <div className={classes.resetLink} onClick={this.passwordReset}>Forgot Password?</div> :
                         <div className={classes.resetLink} onClick={this.passwordReset}>Return to Login</div>
                         }
                         {/*
                         <img src={require("../images/Screenshot-2017-09-20-19.36.45.png")} alt="Line Separator" className="orimage"/>
-                        
+
                         <img src={require("../images/SignUpWithFacebook.png")} alt="Facebook Login" className="facebook-login-image"/>
                         */}
-                   
+
                     </form>
                 </div>
              </div>
-                
+
             <Snackbar
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             open={this.state.messageOpen}

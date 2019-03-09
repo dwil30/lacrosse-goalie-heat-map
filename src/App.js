@@ -43,22 +43,12 @@ const theme = createMuiTheme({
 });
 
 class App extends React.Component {
-    
+
     state = {
         authenticated: false,
         currentUser: null,
         uid: 'default',
-        data: [
-            {
-                id: 'sdgdsfg',
-                name: 'Demo map',
-                shots: {},
-                filter: {},
-                updated: '0',
-                goalie: true,
-                heatmapGrid: 3,
-            },
-        ],
+        data: [],
         activeData: 0,
         goalie:true
     }
@@ -93,8 +83,8 @@ class App extends React.Component {
     }
 
     //finish React lifecycles methods
-    
-        
+
+
     //Start work with login and firebase
     listen = (uid) => {
         base.syncState('usersData/' + uid + '/data', {
@@ -106,7 +96,7 @@ class App extends React.Component {
     getUsersData = (uid) => {
         base.fetch(`usersData/${uid}`, {
             context: this
-        }).then( (data) => {
+        }).then((data) => {
             // console.log( data );
             if ( data.hasOwnProperty('data') ) {
                 // console.log('You old user. We switch on state<>database listener');
@@ -214,7 +204,7 @@ class App extends React.Component {
         }
 
         const date = Date.now();
-        
+
         let newData = [ ...this.state.data ];
         if (!newData[this.state.activeData].shots) {
             newData[this.state.activeData].shots = {}
@@ -269,13 +259,13 @@ class App extends React.Component {
             heatmapGrid: 3,
         })
         newData[this.state.activeData].updated = updated;
-        
+
         this.setState({
             data: newData,
             activeData: (newData.length - 1)
         })
     }
-    
+
     changeHeatmapGrid = (e) => {
         let newData = [...this.state.data];
         const updated = Date.now();
@@ -312,6 +302,7 @@ class App extends React.Component {
     }
 
     render() {
+      console.log(this.state)
         return (
          <div>
             <MuiThemeProvider theme={theme}>
@@ -322,6 +313,9 @@ class App extends React.Component {
                                 appState={this.state}
                                 {...props}
                             />}/>
+                            <Route exact path="/login" component={props => <Login authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
+                            <Route exact path="/signup" component={props => <Signup authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
+
                             <Route exact path="/main" render={ (props) => <Main
                                 appState={this.state}
                                 addShot={this.addShot}
@@ -335,9 +329,9 @@ class App extends React.Component {
                                 deleteActiveMap={this.deleteActiveMap}
                                 {...props}
                             />}/>
-                            <Route exact path="/dashboard" component={props => <Dashboard authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
+                            <Route exact path="/dashboard" component={props => <Dashboard data={this.state.data} authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                             {/*
-                            <Route exact path='/dashboard' component={ (props) => <List 
+                            <Route exact path='/dashboard' component={ (props) => <List
                                 appState={this.state}
                                 authenticated={this.state.authenticated}
                                 changeActiveData={this.changeActiveData}
@@ -345,15 +339,13 @@ class App extends React.Component {
                                 {...props}
                             />} />
                             */}
-                            <Route exact path="/login" component={props => <Login authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                             <Route exact path="/logout" component={props => <Logout authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
-                            <Route exact path="/signup" component={props => <Signup authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                             <Route exact path="/profile" component={props => <Profile authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                             <Route exact path="/create" component={props => <Create authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                         </Switch>
                     </ScrollToTop>
                 </BrowserRouter>
-            </MuiThemeProvider>  
+            </MuiThemeProvider>
         </div>
         )
     }
