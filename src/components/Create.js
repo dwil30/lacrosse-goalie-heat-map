@@ -3,7 +3,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter, Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import NavBar from './NavBar';
-import Footer from './Footer';  
+import Footer from './Footer';
 
 const styles = theme => ({
    leftIcon: {
@@ -12,7 +12,7 @@ const styles = theme => ({
   },
    newButton:{
        float:'right'
-   }    
+   }
 });
 
 class Create extends Component {
@@ -22,7 +22,7 @@ class Create extends Component {
 
 
   render() {
-    const { classes } = this.props;
+    const { classes, appState: { data }, addNewMap } = this.props;
     return (
       <React.Fragment>
         <NavBar />
@@ -38,18 +38,18 @@ class Create extends Component {
                 </div>
                 <div className="dashboard-container">
                     <div className="w-container">
-                        
+
                         <h2 className="newmaph2">Select one of the following heat maps:</h2>
-                        
+
                         <div className="magic-grid new-map-grid">
-                            
+
                             {/* REPEAT FOR EACH TYPE OF HEAT MAP */}
                             <div className="grid-heat-map-item">
                                 <div className="heat-map-preview-container">
                                     <img src={require('../images/GoalieHeatMap.jpg')} alt="Heat Map Preview" />
-                                    <Link to="/main" className="hoverpreview w-inline-block">
-                                        <div class="previewtext">Create Heat Map</div>
-                                        <img src={require('../images/ArrowRightWhite.png')}  alt="right arrow" class="arroweffect"/>
+                                    <Link onClick={addNewMap} to={`/main/${data.length || 0}`} className="hoverpreview w-inline-block">
+                                        <div className="previewtext">Create Heat Map</div>
+                                        <img src={require('../images/ArrowRightWhite.png')}  alt="right arrow" className="arroweffect"/>
                                     </Link>
                                 </div>
                                 <div className="preview-title-container">
@@ -63,7 +63,7 @@ class Create extends Component {
                 </div>
             </div>
         </div>
-        <Footer />    
+        <Footer />
       </React.Fragment>
     )
   }

@@ -41,10 +41,10 @@ class Shot extends Component {
             button:{
                 cursor:'pointer',
                 zIndex:50,
-                marginTop:'-25px',
-                marginLeft:'-25px',
-                width:25, 
-                height:25, 
+                marginTop:'-12px',
+                marginLeft:'-12px',
+                width:25,
+                height:25,
                 position:'absolute',
                 top:xCoor,
                 left:yCoor
@@ -55,21 +55,21 @@ class Shot extends Component {
             <div>
                 {isGoal ? (
                     //Goal Dot - Green
-                        <Dot 
-                            onClick={ (e) => this.removeShot(e, index)} 
+                        <Dot
+                            onClick={ (e) => this.removeShot(e, index)}
                             className={classes.goalDot}
-                            id={index} 
+                            id={index}
                             style={styles.button}
                         />
-               
+
                     )
-                    
-                    : (  
+
+                    : (
                     //Save Dot - Red
-                        <Dot 
-                            onClick={ (e) => this.removeShot(e, index)} 
+                        <Dot
+                            onClick={ (e) => this.removeShot(e, index)}
                             className={classes.saveDot}
-                            id={index} 
+                            id={index}
                             style={styles.button}
                         />
                     )

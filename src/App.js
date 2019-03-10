@@ -97,7 +97,7 @@ class App extends React.Component {
         base.fetch(`usersData/${uid}`, {
             context: this
         }).then((data) => {
-            // console.log( data );
+            console.log( data );
             if ( data.hasOwnProperty('data') ) {
                 // console.log('You old user. We switch on state<>database listener');
                 this.listen(uid);
@@ -248,18 +248,16 @@ class App extends React.Component {
 
     addNewMap = () => {
         const updated = Date.now();
-        let newData = [...this.state.data];
+        let newData = this.state.data.length ? [...this.state.data] : [];
         newData.push({
+            updated,
             id: '',
             name: 'new map',
             shots: {},
             filter: {},
-            updated: '',
             goalie: true,
             heatmapGrid: 3,
         })
-        newData[this.state.activeData].updated = updated;
-
         this.setState({
             data: newData,
             activeData: (newData.length - 1)
@@ -316,7 +314,7 @@ class App extends React.Component {
                             <Route exact path="/login" component={props => <Login authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                             <Route exact path="/signup" component={props => <Signup authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
 
-                            <Route exact path="/main" render={ (props) => <Main
+                            <Route exact path="/main/:id" render={ (props) => <Main
                                 appState={this.state}
                                 addShot={this.addShot}
                                 loadSampleShots={this.loadSampleShots}
@@ -327,6 +325,7 @@ class App extends React.Component {
                                 switchGoalie={this.switchGoalie}
                                 changeHeatmapGrid={this.changeHeatmapGrid}
                                 deleteActiveMap={this.deleteActiveMap}
+                                changeActiveData={this.changeActiveData}
                                 {...props}
                             />}/>
                             <Route exact path="/dashboard" component={props => <Dashboard data={this.state.data} authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
@@ -341,7 +340,13 @@ class App extends React.Component {
                             */}
                             <Route exact path="/logout" component={props => <Logout authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                             <Route exact path="/profile" component={props => <Profile authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
-                            <Route exact path="/create" component={props => <Create authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
+                            <Route exact path="/create" component={props => <Create
+                              authenticated={this.state.authenticated}
+                              setCurrentUser={this.setCurrentUser}
+                              addNewMap={this.addNewMap}
+                              appState={this.state}
+                              {...props}
+                            />} />
                         </Switch>
                     </ScrollToTop>
                 </BrowserRouter>

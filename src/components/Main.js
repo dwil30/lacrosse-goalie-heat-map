@@ -13,39 +13,31 @@ const styles = theme => ({
 })
 
 class Main extends Component {
-    
-    // componentWillMount() {
-    //     // check if there is any order in localStorage
-    //     const localStorageRef = localStorage.getItem(`shots`);
-    //     if(localStorageRef) {
-    //         // update our App component's shots state
-    //         this.setState({
-    //             shots: JSON.parse(localStorageRef), 
-    //         })
-    //     }
-    //     const mapSet = localStorage.getItem(`heatMap`);
-    
-    //     if(mapSet){
-    //         this.setState({
-    //         heatMap: JSON.parse(mapSet), 
-    //         })
-    //     }
-    // }
-    
-    // componentWillUpdate(nextProps, nextState) {
-    //     localStorage.setItem(`shots`, JSON.stringify(nextState.shots));
-    //     //localStorage.setItem('heatMap', JSON.stringify(nextState.heatMap));
-    // }
-    
+
+    componentWillMount() {
+      const { match: { params: { id } }, appState: { activeData }, changeActiveData } = this.props
+      if (id !== activeData ) {
+        changeActiveData(id)
+      }
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+      const { appState: { activeData }, changeActiveData } = this.props
+      const { match: { params: { id } } } = this.props
+      if (id !== activeData ) {
+        changeActiveData(id)
+      }
+    }
+
   state = {
       slider:0.9,
       heatMap: false,
       drawer: true,
       shotResult: true, //true = Save, false = Goal
       editMode: false,
-      filter: {}, 
-      goalie: true, 
-      
+      filter: {},
+      goalie: true,
+
   }
 
     handleChange = name => event => {
@@ -60,21 +52,21 @@ class Main extends Component {
     handleToggle(){
         this.setState({drawer: !this.state.drawer});
     }
-    
+
     switchShotResult = () => {
         this.setState({ shotResult: !!!(this.state.shotResult)});
     }
-    
+
     handleCreateMap(){
-        this.setState({heatMap: true});  
+        this.setState({heatMap: true});
     }
 
     handleSlider = (event, value) => {
         this.setState({ slider: value });
     }
-    
+
     closeHeatmap(){
-         this.setState({heatMap: false});  
+         this.setState({heatMap: false});
     }
 
     heatMapBoxNumber = (e) => {
@@ -106,22 +98,26 @@ class Main extends Component {
     }
 
     render() {
-        const { classes } = this.props;
-        // console.log(this.state.heatMap);
+        const { classes,
+          appState: { data, activeData },
+        } = this.props
+        const activeMap = data[activeData]
+        if (!activeMap) { return null }
+        console.log(activeData)
         return (
               <div className={classes.root}>
-                <NavBar 
+                <NavBar
                     authenticated={this.props.appState.authenticated}
                     handleToggle={this.handleToggle}
                     drawer={this.state.drawer}
                     addNewMap={this.props.addNewMap}
                 />
-                <LeftDrawer 
+                <LeftDrawer
                     switchShotResult={this.switchShotResult}
                     switchGoalie={this.props.switchGoalie}
                     drawer={this.state.drawer}
                     goalie={this.state.goalie}
-                    goalieResult={this.props.appState.data[this.props.appState.activeData].goalie}
+                    goalieResult={activeMap.goalie}
                     shotResult={this.state.shotResult}
                     clickOnFilterRadio={this.clickOnFilterRadio}
                     filter={this.state.filter}
@@ -140,7 +136,6 @@ class Main extends Component {
                     changeHeatmapGrid={this.props.changeHeatmapGrid}
                     deleteActiveMap={this.props.deleteActiveMap}
                     goalie={this.state.goalie}
-                    // goalieResult={this.props.appState.data[this.props.appState.activeData].goalie}
                     handleCreateMap={this.handleCreateMap}
                     handleSlider={this.handleSlider}
                     heatMap={this.state.heatMap}

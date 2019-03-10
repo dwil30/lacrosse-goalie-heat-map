@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Slider from '@material-ui/lab/Slider';
 import Typography from '@material-ui/core/Typography';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 import Shot from './Shot';
 import Modal from './Modal';
@@ -28,12 +29,12 @@ const styles = theme => ({
         display:'inline-block'
     },
     paperSubmit: {
-        padding:20, 
+        padding:20,
         width:300,
         position:'relative',
         float:'left',
         display:'inline-block'
-    }, 
+    },
     main:{
         marginLeft:280
     },
@@ -42,7 +43,7 @@ const styles = theme => ({
     },
     slider: {
          padding: '22px 0px',
-    }, 
+    },
      root: {
         display:'flex'
   },
@@ -74,21 +75,21 @@ const styles = theme => ({
   },
   group: {
     margin: 0
-  },  
+  },
   radio: {
       padding:3
-  }, 
+  },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-  }, 
+  },
   signinButton:{
     width:197,
     marginTop:3
   },
   greyList:{
     backgroundColor:'whitesmoke'
-  }, 
+  },
     legend:{
         fontWeight:600
     }
@@ -112,16 +113,16 @@ class Goal extends Component {
         if (!shots || shots.length===0) {
             return null
         }
-
+        const theme = styles(createMuiTheme())
         return Object.keys(shots).map( (item, key) => (
-            < Shot 
-                key={item} 
-                index={item} 
-                details={shots[item]} 
-                removeShot={this.props.removeShot} 
-                paperWidth={classes.paper.width}
-                paperHeight={classes.paper.height}
-            /> 
+            < Shot
+                key={item}
+                index={item}
+                details={shots[item]}
+                removeShot={this.props.removeShot}
+                paperWidth={theme.paper.width}
+                paperHeight={theme.paper.height}
+            />
         ))
     }
 
@@ -201,7 +202,7 @@ class Goal extends Component {
                         }
                     }
                 }
-                
+
                 if (equalCount === filtersCount && equalCount !== 0  ) {
                     newShots[key] = shots[key];
                 }
@@ -221,21 +222,20 @@ class Goal extends Component {
                 modalOpen: false,
             })
         }
-        
+
     }
 
     render() {
         const appState = this.props.appState;
         const { classes } = this.props;
         const activeData = appState.activeData;
-        let shots = []
-        
+        let shots = {}
+
         if (appState.data[activeData]) {
             shots = appState.data[activeData].shots;
         }
 
         const filteredShots = this.filterShots(shots);
-
 
         return (
             <main className={classes.content}>
@@ -244,16 +244,16 @@ class Goal extends Component {
                     <div className="left-side">
                         <h1 className="datah1">Lacrosse Goalie Heat Map</h1>
                         <h2 className="datah2">Lacrosse Goalie Heat Map</h2>
-                    </div>    
+                    </div>
                     <div className="right-side">
-                        <h2 className="shotsh2"><span id="shots">0</span> shots</h2>
-                    </div>    
+                        <h2 className="shotsh2"><span id="shots">{Object.keys(shots).length}</span> shots</h2>
+                    </div>
                 </div>
-            
+
                 <div className="heat-row">
                     <div className="heat-item">
                     <div onClick={this.props.addShot}>
-                    
+
                     {this.props.heatMap &&
                     <Heatmap
                         shots={filteredShots}
@@ -263,20 +263,20 @@ class Goal extends Component {
                         paperWidth={classes.paper.width}
                         paperHeight={classes.paper.height}
                     />}
-                        
-            
+
+
                     {/*{this.props.appState.data[this.props.appState.activeData].goalie ? */}
                     <div id="goalmap" className="goal-div-container">
-                        {this.props.goalie ? 
-                        
+                        {this.props.goalie ?
+
                         <img alt="Goalie Rightie" src={require('../images/GoalieRight.png')} className="right-goalie" /> :
                         <img alt="Goalie Leftie" src={require('../images/GoalieLeft.png')} className="leftie-goalie" />}
                         <img alt="GoalImage" src={require('../images/LacrosseGoalFinal.jpg')} className="goal-image" id="goal" />
-                        
+
                         {this.getShots(filteredShots)}
                     </div>
                 </div>
-                    
+
                 </div>
                 {!this.props.heatMap ?
                 <div className="heat-item rightside">
@@ -290,10 +290,10 @@ class Goal extends Component {
                         variant="outlined"
                         />
                         <br/>
-                        <Button color='primary' variant="contained" className={classes.signinButton}>Save & View Heat Map</Button>  
+                        <Button color='primary' variant="contained" className={classes.signinButton}>Save & View Heat Map</Button>
                     </div>
                 </div> :
-                <div className="heat-item rightside">    
+                <div className="heat-item rightside">
                     <div className="legend-container">
                         <div className="legend-text">Save Percentage</div>
                         <div className="legend-block first">0-20%</div>
@@ -305,12 +305,12 @@ class Goal extends Component {
                             <div className="legend-block grey">No Data</div>
                         </div>
                     </div>
-                    
+
                     <div className="slider-container">
                         <Typography className={classes.legend} id="label">Heat Map Opacity: {Math.round(this.props.slider * 100) / 100}</Typography>
-                        <Slider 
-                            className={classes.slider} 
-                            value={this.props.slider} 
+                        <Slider
+                            className={classes.slider}
+                            value={this.props.slider}
                             onChange={this.props.handleSlider}
                             min={0}
                             max={1}
@@ -318,7 +318,7 @@ class Goal extends Component {
                             aria-labelledby="label"
                         />
                     </div>
-                        
+
                     <div className="legend-container">
                         <div className="legend-text">Grid Length (2x2 up to 15x15)</div>
                         <input
@@ -330,16 +330,16 @@ class Goal extends Component {
                             name="quads"
                             type="number"
                             value={appState.data[appState.activeData].heatmapGrid}
-                            ref={(input) => { this.gridInput = input }} 
-                            placeholder="Grid Length" 
+                            ref={(input) => { this.gridInput = input }}
+                            placeholder="Grid Length"
                         />
                     </div>
-                   
+
                     <div className="legend-container">
                         <Button variant="outlined" onClick={this.props.closeHeatmap} className="options-button w-button" style={{margin:'auto'}}>Edit Heatmap</Button>
-                        
+
                         <Button variant="outlined" onClick={() => this.madeModalState('OPEN', 'DELETE_HEATMAP')} color="secondary">Delete Heat Map</Button>
-                    </div>        
+                    </div>
                 </div>
                 }
              <Modal
@@ -348,18 +348,18 @@ class Goal extends Component {
                         modalAction={this.state.modalAction}
                         clearShots={this.props.clearShots}
                         deleteActiveMap={this.props.deleteActiveMap}
-                    />            
+                    />
             </div>
         </main>
-                        
+
                         /*
                         <div className="right-container">
                 {this.props.heatMap ?
-                 <div> 
+                 <div>
                     {!this.props.appState.authenticated ?
                     <Link to='/login'><Button>Login to save</Button></Link> :
                         this.getSaveNameField()
-                    }        
+                    }
                     <div className="legend-container">
                         <div className="legend-text">Save Percentage</div>
                         <div className="legend-block first">0-20%</div>
@@ -371,14 +371,14 @@ class Goal extends Component {
                             <div className="legend-block grey">No Data</div>
                         </div>
                     </div>
-                    
+
                     <div className="slider-container">
                         <div className="legend-text">Heat Map Opacity: {this.props.slider}</div>
                         <Slider className={classes.slider} value={this.props.slider} onChange={this.props.handleFirstSlider} />
                     </div>
-                            
-                    
-        
+
+
+
                     <div className="legend-container">
                         <div className="legend-text">Grid Length (2x2 up to 15x15)</div>
                         <input
@@ -390,24 +390,24 @@ class Goal extends Component {
                             name="quads"
                             type="number"
                             value={appState.data[appState.activeData].heatmapGrid}
-                            ref={(input) => { this.gridInput = input }} 
-                            placeholder="Grid Length" 
+                            ref={(input) => { this.gridInput = input }}
+                            placeholder="Grid Length"
                         />
                     </div>
-                   
+
                     <div className="legend-container">
                         <Button onClick={() => this.madeModalState('OPEN', 'DELETE_HEATMAP')} color="secondary">Delete Heat Map</Button>
-                        
+
                         <Button onClick={this.props.closeHeatmap} className="options-button w-button" style={{margin:'auto'}}>Edit Heatmap</Button>
-                    </div>        
+                    </div>
                 </div> : <div>
-                        
+
                         <Button onClick={this.props.handleCreateMap} className="options-button w-button">Show Heat Map</Button><br/>
-                        
-                 
-                
-                        <Button onClick={this.props.loadSampleShots} className="options-button w-button">Load Samples</Button>    
-                    
+
+
+
+                        <Button onClick={this.props.loadSampleShots} className="options-button w-button">Load Samples</Button>
+
                 </div>
                 }
                     <Modal

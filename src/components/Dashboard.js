@@ -24,7 +24,7 @@ class Dashboard extends Component {
 
   render() {
     const { classes, data } = this.props;
-    console.log(data)
+
     return (
       <React.Fragment>
         <NavBar />
@@ -42,11 +42,11 @@ class Dashboard extends Component {
                     <div className="w-container">
                       { data.length ?
                         <div className="magic-grid">
-                            { data.map((heatMap) =>
+                            { data.map((heatMap, i) =>
                               <div key={heatMap.id} className="grid-heat-map-item">
                                   <div className="heat-map-preview-container">
                                       <img src={require('../images/GoalieHeatMap.jpg')} alt="Heat Map Preview" />
-                                      <Link to="/main" className="hoverpreview w-inline-block">
+                                      <Link to={`/main/${i}`} className="hoverpreview w-inline-block">
                                           <div class="previewtext">Edit Heat Map</div>
                                           <img src={require('../images/ArrowRightWhite.png')}  alt="right arrow" className="arroweffect"/>
                                       </Link>
