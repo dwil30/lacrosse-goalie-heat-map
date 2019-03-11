@@ -31,7 +31,7 @@ class Main extends Component {
 
   state = {
       slider:0.9,
-      heatMap: false,
+      heatMap: true,
       drawer: true,
       shotResult: true, //true = Save, false = Goal
       editMode: false,
@@ -57,7 +57,7 @@ class Main extends Component {
         this.setState({ shotResult: !!!(this.state.shotResult)});
     }
 
-    handleCreateMap(){
+    handleCreateMap = () => {
         this.setState({heatMap: true});
     }
 
@@ -65,7 +65,7 @@ class Main extends Component {
         this.setState({ slider: value });
     }
 
-    closeHeatmap(){
+    closeHeatmap = () => {
          this.setState({heatMap: false});
     }
 
@@ -99,25 +99,32 @@ class Main extends Component {
 
     render() {
         const { classes,
-          appState: { data, activeData },
+          appState: { data, activeData, authenticated },
+          addNewMap,
+          switchGoalie,
+          loadSampleShots,
+          clearShots,
+          removeShot,
+          saveName,
+          changeHeatmapGrid,
+          deleteActiveMap,
         } = this.props
         const activeMap = data[activeData]
         if (!activeMap) { return null }
-        console.log(activeData)
+
         return (
               <div className={classes.root}>
                 <NavBar
-                    authenticated={this.props.appState.authenticated}
+                    authenticated={authenticated}
                     handleToggle={this.handleToggle}
                     drawer={this.state.drawer}
-                    addNewMap={this.props.addNewMap}
+                    addNewMap={addNewMap}
                 />
                 <LeftDrawer
                     switchShotResult={this.switchShotResult}
-                    switchGoalie={this.props.switchGoalie}
+                    switchGoalie={switchGoalie}
                     drawer={this.state.drawer}
-                    goalie={this.state.goalie}
-                    goalieResult={activeMap.goalie}
+                    goalie={activeMap.goalie}
                     shotResult={this.state.shotResult}
                     clickOnFilterRadio={this.clickOnFilterRadio}
                     filter={this.state.filter}
@@ -129,13 +136,12 @@ class Main extends Component {
                     filter={this.state.filter}
                     // ACTIONS:
                     addShot={this.addShot}
-                    loadSampleShots={this.props.loadSampleShots}
-                    clearShots={this.props.clearShots}
-                    removeShot={this.props.removeShot}
-                    saveName={this.props.saveName}
-                    changeHeatmapGrid={this.props.changeHeatmapGrid}
-                    deleteActiveMap={this.props.deleteActiveMap}
-                    goalie={this.state.goalie}
+                    loadSampleShots={loadSampleShots}
+                    clearShots={clearShots}
+                    removeShot={removeShot}
+                    saveName={saveName}
+                    changeHeatmapGrid={changeHeatmapGrid}
+                    deleteActiveMap={deleteActiveMap}
                     handleCreateMap={this.handleCreateMap}
                     handleSlider={this.handleSlider}
                     heatMap={this.state.heatMap}

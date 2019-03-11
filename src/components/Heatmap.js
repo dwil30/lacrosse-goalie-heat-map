@@ -17,7 +17,7 @@ class Heatmap extends Component {
         const boxCount = boxLength * boxLength;
         const boxWidth = this.props.paperWidth / boxLength;
         const boxHeight = this.props.paperHeight / boxLength;
-        
+
         const boxList = [];
         for (let i = 0; i < boxCount; i++) {
             boxList.push({
@@ -35,13 +35,12 @@ class Heatmap extends Component {
             const columnNumber = Math.ceil(shots[key].xCoor / boxWidth);
             const rowNumber = Math.ceil(shots[key].yCoor / boxHeight);
             const iInBoxList = ((rowNumber - 1) * boxLength) + columnNumber - 1;
-
             if ( !shots[key].shotResult ) {
                 boxList[iInBoxList].goal = boxList[iInBoxList].goal + 1;
             } else if (shots[key].shotResult) {
                 boxList[iInBoxList].save = boxList[iInBoxList].save + 1;
             }
-        };   
+        };
 
         return boxList.map((item, i) => {
             let percent = 0;
@@ -73,11 +72,11 @@ class Heatmap extends Component {
             }
 
             return (
-                <div 
-                    className={boxClass} 
-                    style={{ 
-                        width: boxWidth, 
-                        height: boxHeight 
+                <div
+                    className={boxClass}
+                    style={{
+                        width: boxWidth,
+                        height: boxHeight
                     }}
                     key={i}
                     title={`Shots: ${item.goal+item.save} - Save Percentage: ${percent}%`}
@@ -95,14 +94,14 @@ class Heatmap extends Component {
         const styles = {
             opacity: this.props.slider
         }
-        
+
         return (
             <div>
                 <div className="heat-map-container" style={styles} onClick={this.heatmapClick}>
                     {this.getBoxes()}
                 </div>
-            </div>            
-        )  
+            </div>
+        )
     }
 }
 

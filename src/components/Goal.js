@@ -95,6 +95,8 @@ const styles = theme => ({
     }
 })
 
+const theme = styles(createMuiTheme())
+
 class Goal extends Component {
 
     state = {
@@ -113,7 +115,6 @@ class Goal extends Component {
         if (!shots || shots.length===0) {
             return null
         }
-        const theme = styles(createMuiTheme())
         return Object.keys(shots).map( (item, key) => (
             < Shot
                 key={item}
@@ -135,7 +136,8 @@ class Goal extends Component {
 
     saveMapName = () => {
         // console.log('saveMapName');
-        this.props.saveName(this.state.mapName);
+        this.state.mapName && this.props.saveName(this.state.mapName);
+        this.props.handleCreateMap()
     }
 
     changeMapName = (e) => {
@@ -230,9 +232,9 @@ class Goal extends Component {
         const { classes } = this.props;
         const activeData = appState.activeData;
         let shots = {}
-
-        if (appState.data[activeData]) {
-            shots = appState.data[activeData].shots;
+        const mapData = appState.data[activeData]
+        if (mapData) {
+            shots = mapData.shots;
         }
 
         const filteredShots = this.filterShots(shots);
@@ -242,7 +244,7 @@ class Goal extends Component {
                 <div className={classes.toolbar} />
                 <div className="results-top-title-container">
                     <div className="left-side">
-                        <h1 className="datah1">Lacrosse Goalie Heat Map</h1>
+                        <h1 className="datah1">{mapData.name}</h1>
                         <h2 className="datah2">Lacrosse Goalie Heat Map</h2>
                     </div>
                     <div className="right-side">
@@ -259,15 +261,15 @@ class Goal extends Component {
                         shots={filteredShots}
                         slider={this.props.slider}
                         heatMap={this.props.heatMap}
-                        heatMapLength={appState.data[appState.activeData].heatmapGrid}
-                        paperWidth={classes.paper.width}
-                        paperHeight={classes.paper.height}
+                        heatMapLength={mapData.heatmapGrid}
+                        paperWidth={theme.paper.width}
+                        paperHeight={theme.paper.height}
                     />}
 
 
                     {/*{this.props.appState.data[this.props.appState.activeData].goalie ? */}
                     <div id="goalmap" className="goal-div-container">
-                        {this.props.goalie ?
+                        {mapData.goalie ?
 
                         <img alt="Goalie Rightie" src={require('../images/GoalieRight.png')} className="right-goalie" /> :
                         <img alt="Goalie Leftie" src={require('../images/GoalieLeft.png')} className="leftie-goalie" />}
@@ -288,9 +290,10 @@ class Goal extends Component {
                         name="heatMapName"
                         margin="normal"
                         variant="outlined"
+                        onChange={this.changeMapName}
                         />
                         <br/>
-                        <Button color='primary' variant="contained" className={classes.signinButton}>Save & View Heat Map</Button>
+                        <Button color='primary' variant="contained" className={classes.signinButton} onClick={this.saveMapName}>Save & View Heat Map</Button>
                     </div>
                 </div> :
                 <div className="heat-item rightside">
