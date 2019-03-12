@@ -31,14 +31,16 @@ class Heatmap extends Component {
         }
 
         const shots = this.props.shots;
+        console.log(shots)
         for (let key in shots) {
             const columnNumber = Math.ceil(shots[key].xCoor / boxWidth);
             const rowNumber = Math.ceil(shots[key].yCoor / boxHeight);
             const iInBoxList = ((rowNumber - 1) * boxLength) + columnNumber - 1;
+            console.log(boxList[iInBoxList])
             if ( !shots[key].shotResult ) {
-                boxList[iInBoxList].goal = boxList[iInBoxList].goal + 1;
+                boxList[iInBoxList].goal += 1;
             } else if (shots[key].shotResult) {
-                boxList[iInBoxList].save = boxList[iInBoxList].save + 1;
+                boxList[iInBoxList].save  += 1;
             }
         };
 

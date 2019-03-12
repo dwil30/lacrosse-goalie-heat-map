@@ -60,7 +60,7 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
   -ms-flex-align: center;
-  align-items: center;   
+  align-items: center;
     width:100%;
 }
 .optional-block{
@@ -75,31 +75,31 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
   -ms-flex-align: center;
-  align-items: center;   
+  align-items: center;
     width:100%;
 }
 .Facebook {
     background-color: #3b5998;
     color:white;
-    width:25%; 
+    width:25%;
     padding:15px;
 }
 .Twitter{
     background-color: #0084b4;
     color:white;
-    width:25%; 
+    width:25%;
     padding:15px;
 }
 .Google{
     background-color: #E9503D;
     color:white;
-    width:25%; 
+    width:25%;
     padding:15px;
 }
 .Pinterest {
     background-color: #C31C23;
     color:white;
-    width:25%; 
+    width:25%;
     padding:15px;
 }
 .addnewdiv{
@@ -185,7 +185,7 @@ p {
 }
 .login-wrapper.signup{
   background-image: -webkit-gradient(linear, left top, left bottom, from(hsla(0, 0%, 73%, .9)), to(hsla(0, 0%, 73%, .9))), url('../images/LacrosseGoalieBackground.jpg');
-  background-image: linear-gradient(180deg, hsla(0, 0%, 73%, .9), hsla(0, 0%, 73%, .9)), url('../images/LacrosseGoalieBackground.jpg'); 
+  background-image: linear-gradient(180deg, hsla(0, 0%, 73%, .9), hsla(0, 0%, 73%, .9)), url('../images/LacrosseGoalieBackground.jpg');
 }
 .right-goalie, .leftie-goalie {
     z-index:1;
@@ -212,23 +212,23 @@ p {
   text-align: center;
 }
 
-.legend-block.first {
+.legend-block.first, .heat-map-box.first {
   background-color: #e82121;
 }
 
-.legend-block.second {
+.legend-block.second, .heat-map-box.second {
   background-color: #df621b;
 }
 
-.legend-block.third {
+.legend-block.third, .heat-map-box.third {
   background-color: #d7a315;
 }
 
-.legend-block.fifth {
+.legend-block.fifth, .heat-map-box.fifth {
   background-color: #70c60b;
 }
 
-.legend-block.grey {
+.legend-block.grey, .heat-map-box.grey {
   background-color: #c5c5c5;
 }
 
@@ -259,5 +259,22 @@ p {
   -webkit-box-align: start;
   -webkit-align-items: flex-start;
   -ms-flex-align: start;
-  align-items: flex-start; 
+  align-items: flex-start;
+}
+.heat-item {
+  position: relative;
+}
+
+.heat-map-container {
+  position: absolute;
+  display: block;
+  width: 420px;
+  height: 420px;
+  z-index: 1000000;
+  top: 15px;
+  left: 50%;
+  transform: translate(-50%,0);
+}
+.heat-map-box {
+  float: left;
 }
