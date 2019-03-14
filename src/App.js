@@ -307,6 +307,7 @@ class App extends React.Component {
                     <ScrollToTop>
                         <Switch>
                             <Route exact path="/" render={ (props) => <Home
+                                authenticated={this.state.authenticated}                
                                 appState={this.state}
                                 {...props}
                             />}/>

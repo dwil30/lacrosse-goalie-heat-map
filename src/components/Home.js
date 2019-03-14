@@ -18,7 +18,8 @@ class Home extends Component {
     return (
       <React.Fragment>
         <CssBaseline />
-        <NavBar />
+        <NavBar 
+        authenticated={this.props.authenticated}/>
 
         <div className="hero">
             <div className="hero-flex">
