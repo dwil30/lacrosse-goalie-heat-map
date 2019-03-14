@@ -116,13 +116,16 @@ state = {
                     <Typography variant="h6" color="inherit" className={classes.grow}>
                         
                     </Typography>
-                    {this.current() === 0 &&
-                  
+                    {this.current() === 0 && !this.props.authenticated &&
                     <React.Fragment>              
                     <Button component={Link} to="/login" color='primary' variant="outlined" className={classes.actionButtom}>Login</Button>
                     
                     <Button component={Link} to="/signup" color='primary' variant="contained" className={classes.actionButtom}>Get Started</Button>
                     </React.Fragment>             
+                    }
+                    
+                    {this.current() === 0 && this.props.authenticated &&
+                    <Button component={Link} to="/dashboard" color='primary' variant="contained" className={classes.actionButtom}>Dashboard</Button>                      
                     }
                     
                     {this.current() === 1 &&
