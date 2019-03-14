@@ -228,15 +228,14 @@ class Goal extends Component {
     }
 
     render() {
-        const appState = this.props.appState;
-        const { classes } = this.props;
-        const activeData = appState.activeData;
+        const { classes, appState } = this.props;
+        const { activeData } = appState;
+
         let shots = {}
         const mapData = appState.data[activeData]
-        if (mapData) {
+        if (mapData && mapData.shots) {
             shots = mapData.shots;
         }
-
         const filteredShots = this.filterShots(shots);
 
         return (

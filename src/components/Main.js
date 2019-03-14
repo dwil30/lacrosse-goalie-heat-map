@@ -29,16 +29,16 @@ class Main extends Component {
       }
     }
 
-  state = {
-      slider:0.9,
-      heatMap: true,
-      drawer: true,
-      shotResult: true, //true = Save, false = Goal
-      editMode: false,
-      filter: {},
-      goalie: true,
+    state = {
+        slider:0.9,
+        heatMap: true,
+        drawer: true,
+        shotResult: true, //true = Save, false = Goal
+        editMode: false,
+        filter: {},
+        goalie: true,
 
-  }
+    }
 
     handleChange = name => event => {
         this.setState({ [name]: event.target.checked });
