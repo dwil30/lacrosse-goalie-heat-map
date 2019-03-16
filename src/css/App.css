@@ -224,11 +224,15 @@ p {
   background-color: #d7a315;
 }
 
+.legend-block.fourth, .heat-map-box.fourth {
+  background-color: #bcce10;
+}
+
 .legend-block.fifth, .heat-map-box.fifth {
   background-color: #70c60b;
 }
 
-.legend-block.grey, .heat-map-box.grey {
+.legend-block.grey, .heat-map-box.nuetral {
   background-color: #c5c5c5;
 }
 
