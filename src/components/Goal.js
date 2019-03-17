@@ -243,7 +243,7 @@ class Goal extends Component {
                 <div className={classes.toolbar} />
                 <div className="results-top-title-container">
                     <div className="left-side">
-                        <h1 className="datah1">{mapData.name}</h1>
+                        <h1 className="heat-map-name">{mapData.name}</h1>
                         <h2 className="datah2">Lacrosse Goalie Heat Map</h2>
                     </div>
                     <div className="right-side">

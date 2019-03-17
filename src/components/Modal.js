@@ -49,8 +49,8 @@ class Modal extends Component {
             <Button onClick={this.props.madeModalClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.deleteHeatMap} color="primary" autoFocus>
-              Delete!
+            <Button onClick={this.deleteHeatMap} color="primary" variant="contained">
+              Delete
             </Button>
           </DialogActions>
         </Dialog>

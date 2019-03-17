@@ -34,12 +34,24 @@ const styles = theme => ({
     width:'100%'
   },
   toolbar: theme.mixins.toolbar,
+    
+   /* 
   colorSwitchBase: {
     color: '#74c847',
     '&$colorChecked': {
       color: '#f22126',
       '& + $colorBar': {
         backgroundColor: '#ff9d9e',
+      },
+    },
+  }, 
+    */
+   colorSwitchBase: {
+    color: '#74c847',
+    '&$colorChecked': {
+      color: 'blue',
+      '& + $colorBar': {
+        backgroundColor: 'blue',
       },
     },
   },
@@ -117,7 +129,7 @@ class LeftDrawer extends Component {
                         <div className="data-points-container">
                             <div className="data-point-item">
                                 <h4 className="data-point-heading-h4">Shot Result</h4>
-                                <div className={this.props.shotResult ? "label-text" : "label-text goal-text"}>Goal</div>
+                                <div className={this.props.shotResult ? "label-text" : "label-text save-text"}>Goal</div>
                                 <Switch
                                   checked={this.props.shotResult}
                                   onChange={this.props.handleChange('shotResult')}
@@ -128,7 +140,7 @@ class LeftDrawer extends Component {
                                     bar: classes.colorBar,
                                     }}
                                 />
-                                <div className={!this.props.shotResult ? "label-text" : "label-text save-text"}>Save</div>
+                                <div className={!this.props.shotResult ? "label-text" : "label-text goal-text"}>Save</div>
                             </div>
                             <div className="data-point-item">
                                 <h4 className="data-point-heading-h4">Goalie</h4>
