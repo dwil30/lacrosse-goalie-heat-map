@@ -289,4 +289,5 @@ p {
 }
 .heat-map-box {
   float: left;
+  border: 1px solid #ffffff5e;    
 }
