@@ -251,6 +251,14 @@ p {
     font-weight:300;
     margin:0;
 }
+.heat-map-name {
+    display: inline-block;
+    margin-top: 0px;
+    float: none;
+    font-size: 25px;
+    line-height: 25px;
+    margin-bottom:0px;
+}
 .results-top-title-container{
   display: -webkit-box;
   display: -webkit-flex;
@@ -274,11 +282,12 @@ p {
   display: block;
   width: 420px;
   height: 420px;
-  z-index: 1000000;
+  z-index: 999;
   top: 15px;
   left: 50%;
   transform: translate(-50%,0);
 }
 .heat-map-box {
   float: left;
+  border: 1px solid #ffffff5e;    
 }

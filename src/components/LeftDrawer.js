@@ -34,14 +34,67 @@ const styles = theme => ({
     width:'100%'
   },
   toolbar: theme.mixins.toolbar,
-  colorSwitchBase: {
-    color: '#74c847',
-    '&$colorChecked': {
-      color: '#f22126',
-      '& + $colorBar': {
-        backgroundColor: '#ff9d9e',
+ iOSSwitchBase: {
+    '&$iOSChecked': {
+      color: theme.palette.common.white,
+      '& + $iOSBar': {
+        backgroundColor: '#52d869',
       },
     },
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+      easing: theme.transitions.easing.sharp,
+    }),
+  },
+iOSSwitchBaseGoalie: {
+    '&$iOSChecked': {
+      color: theme.palette.common.white,
+      '& + $iOSBar': {
+        backgroundColor: '#d3d3d3',
+      },
+    },
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+      easing: theme.transitions.easing.sharp,
+    }),
+  },    
+  iOSChecked: {
+    transform: 'translateX(15px)',
+    '& + $iOSBar': {
+      opacity: 1,
+      border: 'none',
+    },
+  },
+  iOSBar: {
+    borderRadius: 13,
+    width: 42,
+    height: 26,
+    marginTop: -13,
+    marginLeft: -21,
+    border: 'solid 1px',
+    borderColor: theme.palette.grey[400],
+    backgroundColor: '#eb2e2e',
+    opacity: 1,
+    transition: theme.transitions.create(['background-color', 'border']),
+  },
+  iOSBarGoalie: {
+    borderRadius: 13,
+    width: 42,
+    height: 26,
+    marginTop: -13,
+    marginLeft: -21,
+    border: 'solid 1px',
+    borderColor: theme.palette.grey[400],
+    backgroundColor: '#585858',
+    opacity: 1,
+    transition: theme.transitions.create(['background-color', 'border']),
+  },
+  iOSIcon: {
+    width: 24,
+    height: 24,
+  },
+  iOSIconChecked: {
+    boxShadow: theme.shadows[1],
   },
   formControl: {
     margin: 0
@@ -117,18 +170,20 @@ class LeftDrawer extends Component {
                         <div className="data-points-container">
                             <div className="data-point-item">
                                 <h4 className="data-point-heading-h4">Shot Result</h4>
-                                <div className={this.props.shotResult ? "label-text" : "label-text goal-text"}>Goal</div>
+                                <div className={this.props.shotResult ? "label-text" : "label-text save-text"}>Goal</div>
                                 <Switch
                                   checked={this.props.shotResult}
                                   onChange={this.props.handleChange('shotResult')}
                                   value="shotResult"
                                   classes={{
-                                    switchBase: classes.colorSwitchBase,
-                                    checked: classes.colorChecked,
-                                    bar: classes.colorBar,
-                                    }}
+                                    switchBase: classes.iOSSwitchBase,
+                                    bar: classes.iOSBar,
+                                    icon: classes.iOSIcon,
+                                    iconChecked: classes.iOSIconChecked,
+                                    checked: classes.iOSChecked,
+                                  }}  
                                 />
-                                <div className={!this.props.shotResult ? "label-text" : "label-text save-text"}>Save</div>
+                                <div className={!this.props.shotResult ? "label-text" : "label-text goal-text"}>Save</div>
                             </div>
                             <div className="data-point-item">
                                 <h4 className="data-point-heading-h4">Goalie</h4>
@@ -137,7 +192,13 @@ class LeftDrawer extends Component {
                                   checked={this.props.goalie}
                                   onChange={this.props.switchGoalie}
                                   value="goalie"
-                                  color="primary"
+                                  classes={{
+                                    switchBase: classes.iOSSwitchBaseGoalie,
+                                    bar: classes.iOSBarGoalie,
+                                    icon: classes.iOSIcon,
+                                    iconChecked: classes.iOSIconChecked,
+                                    checked: classes.iOSChecked,
+                                  }}  
                                 />
                                 <div className="label-text">Rightie</div>
                             </div>

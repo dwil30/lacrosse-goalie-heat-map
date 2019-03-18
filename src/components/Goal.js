@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
+import _ from 'lodash';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -116,7 +117,7 @@ class Goal extends Component {
             return null
         }
         return Object.keys(shots).map( (item, key) => (
-            < Shot
+            <Shot
                 key={item}
                 index={item}
                 details={shots[item]}
@@ -236,18 +237,23 @@ class Goal extends Component {
         if (mapData && mapData.shots) {
             shots = mapData.shots;
         }
+        
+        let saveCount = _.filter(shots, { 'shotResult': true }).length;
+        let savePercentage = (saveCount / Object.keys(shots).length * 100).toFixed(1)
         const filteredShots = this.filterShots(shots);
+        
+        
 
         return (
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <div className="results-top-title-container">
                     <div className="left-side">
-                        <h1 className="datah1">{mapData.name}</h1>
+                        <h1 className="heat-map-name">{mapData.name}</h1>
                         <h2 className="datah2">Lacrosse Goalie Heat Map</h2>
                     </div>
                     <div className="right-side">
-                        <h2 className="shotsh2"><span id="shots">{Object.keys(shots).length}</span> shots</h2>
+                        <h2 className="shotsh2"><span id="shots">{Object.keys(shots).length}</span> shots - {savePercentage}% Save Percentage</h2>
                     </div>
                 </div>
 
@@ -295,9 +301,9 @@ class Goal extends Component {
                         <Button color='primary' variant="contained" className={classes.signinButton} onClick={this.saveMapName}>Save & View Heat Map</Button>
                     </div>
                 </div> :
-                <div className="heat-item rightside">
+                <div className="heat-item rightside"> 
                     <div className="legend-container">
-                        <div className="legend-text">Save Percentage</div>
+                        <div className="legend-text">Heat Map Key - Save Percentage</div>
                         <div className="legend-block first">0-20%</div>
                         <div className="legend-block second">20-40%</div>
                         <div className="legend-block third">40-60%</div>
