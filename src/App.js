@@ -50,7 +50,8 @@ class App extends React.Component {
         uid: 'default',
         data: [],
         activeData: 0,
-        goalie:true
+        goalie:true,
+        dataLoading: true,
     }
 
 
@@ -72,7 +73,6 @@ class App extends React.Component {
                 this.setState({
                     authenticated: false,
                     currentUser: null,
-                    loading: false,
                 })
             }
         })
@@ -91,6 +91,7 @@ class App extends React.Component {
             context: this,
             state: 'data',
         })
+        setTimeout(() => this.setState({ dataLoading: false }), 500)        
     }
 
     getUsersData = (uid) => {
@@ -300,6 +301,7 @@ class App extends React.Component {
     }
 
     render() {
+        console.log(this.state)
         return (
          <div>
             <MuiThemeProvider theme={theme}>
@@ -307,7 +309,7 @@ class App extends React.Component {
                     <ScrollToTop>
                         <Switch>
                             <Route exact path="/" render={ (props) => <Home
-                                authenticated={this.state.authenticated}                
+                                authenticated={this.state.authenticated}
                                 appState={this.state}
                                 {...props}
                             />}/>
@@ -328,7 +330,7 @@ class App extends React.Component {
                                 changeActiveData={this.changeActiveData}
                                 {...props}
                             />}/>
-                            <Route exact path="/dashboard" component={props => <Dashboard data={this.state.data} authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
+                            <Route exact path="/dashboard" component={props => <Dashboard loading={this.state.dataLoading} data={this.state.data} authenticated={this.state.authenticated} setCurrentUser={this.setCurrentUser} {...props} />} />
                             {/*
                             <Route exact path='/dashboard' component={ (props) => <List
                                 appState={this.state}

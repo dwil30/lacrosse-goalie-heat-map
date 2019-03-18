@@ -3,6 +3,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter, Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import NavBar from './NavBar';
 import Footer from './Footer';
 
@@ -13,6 +14,12 @@ const styles = theme => ({
   },
    newButton:{
        float:'right'
+   },
+   loaderWrapper: {
+     display: 'flex',
+     height: '100vh',
+     alignItems: 'center',
+     justifyContent: 'center',
    }
 });
 
@@ -23,8 +30,8 @@ class Dashboard extends Component {
 
 
   render() {
-    const { classes, data } = this.props;
-
+    const { classes, data, loading } = this.props;
+    if (loading) { return <div className={classes.loaderWrapper}><CircularProgress /></div> }
     return (
       <React.Fragment>
         <NavBar />

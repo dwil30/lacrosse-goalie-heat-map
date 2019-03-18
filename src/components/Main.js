@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { withRouter } from 'react-router-dom';
 
 import NavBar from './NavBar';
@@ -10,6 +11,12 @@ const styles = theme => ({
     root: {
         display: 'flex',
     },
+    loaderWrapper: {
+      display: 'flex',
+      height: '100vh',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }
 })
 
 class Main extends Component {
@@ -22,10 +29,13 @@ class Main extends Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-      const { appState: { activeData }, changeActiveData } = this.props
+      const { appState: { activeData, data, dataLoading }, changeActiveData } = this.props
       const { match: { params: { id } } } = this.props
+      const activeMap = data[activeData]
       if (id !== activeData ) {
         changeActiveData(id)
+      } else if (activeMap && !activeMap.shots && this.state.heatMap) {
+        this.setState({ heatMap: false })
       }
     }
 
@@ -99,7 +109,7 @@ class Main extends Component {
 
     render() {
         const { classes,
-          appState: { data, activeData, authenticated },
+          appState: { data, activeData, authenticated, dataLoading },
           addNewMap,
           switchGoalie,
           loadSampleShots,
@@ -110,7 +120,7 @@ class Main extends Component {
           deleteActiveMap,
         } = this.props
         const activeMap = data[activeData]
-        if (!activeMap) { return null }
+        if (!activeMap || dataLoading) { return <div className={classes.loaderWrapper}><CircularProgress /></div> }
 
         return (
               <div className={classes.root}>
